@@ -1,0 +1,21 @@
+.page_content {
+    header {
+        .add_new_client {
+            display: flex;
+            align-items: end;
+
+            .add_new_client_content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 30px;
+            }
+
+            svg {
+                font-size: 30px;
+                color: $color-1;
+            }
+
+        }
+    }
+}

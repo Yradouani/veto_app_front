@@ -8,11 +8,6 @@ const Orders = () => {
             <div className='page_content'>
                 <h1>Commandes</h1>
                 <div className='orders_content'>
-                    {/* <div className='orders_content_top'>
-                        <span>Référence</span>
-                        
-                    </div>
-                    <div className='orders_content_list'></div> */}
                     <table>
                         <thead>
                             <tr>
@@ -38,8 +33,6 @@ const Orders = () => {
                         </tbody>
                     </table>
                 </div>
-
-
             </div>
         </div>
     );
