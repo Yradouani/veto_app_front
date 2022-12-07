@@ -5,6 +5,8 @@ import SignUp from '../components/SignUp';
 
 const Home = () => {
     const [signUp, setSignUp] = useState(true);
+    const [success, setSuccess] = useState(false);
+
 
     return (
         <div className='home'>
@@ -12,21 +14,32 @@ const Home = () => {
                 <div className='header_title'>
                     <h1>Bienvenue chez Véto'app</h1>
                     <p>La première application de rappel de vaccin automatisé</p>
+                    {success ?
+                        (
+                            <p>Formulaire validé ! <br />
+                                Veuillez maintenant vous connecter
+                            </p>
+                        )
+                        :
+                        ""
+                    }
                 </div>
                 <div className='connect_modal'>
                     <div className="header_btn">
                         <button style={{
                             background: signUp ? "#B38B6D" : "rgb(238, 235, 229)",
-                            color: signUp ? "white" : "black"
+                            color: signUp ? "white" : "black",
+                            display: success ? 'none' : 'bloc'
                         }}
                             onClick={() => setSignUp(true)}>S'inscrire</button>
+
                         <button style={{
                             background: signUp ? "rgb(238, 235, 229)" : "#B38B6D",
                             color: signUp ? "black" : "white"
                         }}
                             onClick={() => setSignUp(false)}>Se connecter</button>
                     </div>
-                    {signUp ? <SignUp /> : <Login />}
+                    {signUp ? <SignUp success={success} setSuccess={setSuccess} setSignUp={setSignUp} /> : <Login />}
                 </div>
             </div>
         </div>
