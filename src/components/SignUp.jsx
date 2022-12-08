@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import axios from '../api/axios';
 import { useRef, useState, useEffect } from 'react';
 import { BsCheckLg } from "react-icons/bs";
 import { ImCross } from "react-icons/im";
@@ -21,6 +21,9 @@ const SignUp = (props) => {
     const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%£§&]).{8,24}$/;
     const SIRET_REGEX = /^[0-9]{14}$/;
     const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+    //Register constants
+    const SIGNIN_URL = '/user/signin';
 
     const [siret, setSiret] = useState('');
     const [validSiret, setValidSiret] = useState(false);
@@ -49,12 +52,12 @@ const SignUp = (props) => {
     const [errMsg, setErrMsg] = useState('');
 
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-
-    // useEffect(() => {
-    //     registerFirstname.current.focus();
-    // }, [])
+    //Focus sur le premier élément au chargement de la page
+    useEffect(() => {
+        registerSiret.current.focus();
+    }, [])
 
     useEffect(() => {
         const result = SIRET_REGEX.test(siret);
@@ -103,21 +106,38 @@ const SignUp = (props) => {
     }, [firstName, lastName, siret, email, pwd, matchPwd])
 
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
 
         if (validSiret && validFirstName && validLastName && validEmail && validPwd && validMatch) {
-            props.setSuccess(true);
-            props.setSignUp(false);
+            try {
+                const response = await axios.post(
+                    SIGNIN_URL,
+                    JSON.stringify({ siret, firstname: firstName, lastname: lastName, email, pwd, matchPwd }),
+                    {
+                        headers: { 'Content-Type': 'application/json' },
+                        // withCredentials: true
+                    }
+                );
+                console.log(response.data);
+                console.log(response.accessToken);
+                console.log(JSON.stringify(response));
+                props.setSuccess(true);
+                props.setSignUp(false);
+            } catch (err) {
+                console.log(err);
+                if (!err?.response) {
+                    setErrMsg('Pas de réponse du serveur');
+                } else if (err.response?.status === 409) {
+                    setErrMsg("Inscription échouée");
+                }
+                errRef.current.focus();
+            }
         } else {
             setErrMsg("Formulaire invalide");
             return;
         }
-        // axios.post(`https://jsonholder.com/users`)
-        //     .then(res => {
-        //         const animals = res.data;
-        //         this.setState({ animals });
-        //     })
+
 
     }
 

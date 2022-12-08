@@ -1,12 +1,31 @@
 import React from 'react';
-import { useRef } from 'react';
-import axios from 'axios';
+import { useRef, useState, useEffect } from 'react';
+import axios from '../api/axios';
 
 const Login = () => {
-    const email = useRef();
-    const password = useRef();
+    const emailRef = useRef();
+    const errRef = useRef();
 
-    const handleRegister = (e) => {
+    const [email, setEmail] = useState('');
+    const [pwd, setPwd] = useState('');
+    const [errMsg, setErrMsg] = useState('');
+
+
+    //Connection constant
+    const LOGIN_URL = '/user/login';
+
+    //Focus sur le premier élément au chargement de la page
+    useEffect(() => {
+        emailRef.current.focus();
+    }, [])
+
+
+    //Enlever le msg d'erreur si l'utilisateur entre des données
+    useEffect(() => {
+        setErrMsg('');
+    }, [email, pwd])
+
+    const handleRegister = async (e) => {
         e.preventDefault();
 
         // axios.get(`https://jsonholder.com/users`)
@@ -15,33 +34,49 @@ const Login = () => {
         //         this.setState({ animals });
         //     })
 
-        console.log(email.current.value, password.current.value);
+        axios.post(
+            LOGIN_URL,
+            JSON.stringify({ email, pwd }),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                // withCredentials: true
+            }
+        );
     }
 
     return (
         <div className='login'>
+            <p
+                ref={errRef}
+                className={errMsg ? "errmsg" : "offscreen"}
+                aria-live="assertive"
+            >
+                {errMsg}
+            </p>
             <h2>Se connecter</h2>
             <form onSubmit={e => handleRegister(e)}>
                 <table>
                     <tbody>
                         <tr>
-                            <td><label htmlFor="email">Email *</label></td>
+                            <td><label htmlFor="email">Email * : </label></td>
                             <td><input
                                 type="email"
-                                name="email"
                                 id="email"
                                 required
-                                ref={email}
+                                ref={emailRef}
+                                autoComplete="off"
+                                onChange={(e) => setEmail(e.target.value)}
+                                value={email}
                             /></td>
                         </tr>
                         <tr>
-                            <td><label htmlFor="password">Mot de passe *</label></td>
+                            <td><label htmlFor="password">Mot de passe * : </label></td>
                             <td><input
                                 type="password"
-                                name="password"
                                 id="password"
                                 required
-                                ref={password}
+                                onChange={(e) => setPwd(e.target.value)}
+                                value={pwd}
                             /></td>
                         </tr>
                     </tbody>
