@@ -2,20 +2,22 @@ html {
     height: 100%;
 }
 
-body {
-    background: url('../../../public/bg.png');
+.home {
+    // background: url('../../../public/bg.png');
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
 }
 
+
 .header_content {
     display: flex;
     flex-direction: column;
     margin: 0;
-    background: rgba(231, 208, 174, 0.8);
-    padding: 30px 50px;
+    background: rgba(174, 231, 193, 0.8);
+    padding: 40px 150px;
+    border-radius: 12px;
 
     .header_title {
         h1 {
@@ -51,7 +53,7 @@ body {
 
 .signup,
 .login {
-    background: #B38B6D;
+    background: #46a967;
     color: white;
     padding: 20px;
     border-radius: 0 15px 15px 15px;

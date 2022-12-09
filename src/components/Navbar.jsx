@@ -13,11 +13,11 @@ const Navbar = () => {
                 <input type="text" name="search" id="search_field_input" placeholder="Rechercher" maxlength="20" />
             </div>
             <ul>
-                <NavLink to="/" className={(nav) => (nav.isActive ? "nav-active" : "")}>
-                    <li><AiFillDashboard /> Tableau de bord</li>
+                <NavLink to="/page_accueil" className={(nav) => (nav.isActive ? "nav-active" : "")}>
+                    <li><AiFillDashboard /> Accueil</li>
                 </NavLink>
-                <NavLink to="/products" className={(nav) => (nav.isActive ? "nav-active" : "")}>
-                    <li><FaProductHunt /> Produits</li>
+                <NavLink to="/clients" className={(nav) => (nav.isActive ? "nav-active" : "")}>
+                    <li><FaProductHunt /> Mes clients</li>
                 </NavLink>
                 <NavLink to="/orders" className={(nav) => (nav.isActive ? "nav-active" : "")}>
                     <li><FaBuffer /> Commandes</li>

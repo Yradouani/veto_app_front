@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
-import Products from './pages/Products';
-import Orders from './pages/Orders';
+import MainPage from './pages/MainPage';
+import Client from './pages/Client';
 import Customers from './pages/Customers';
 import Analytics from './pages/Analytics';
 import Carriers from './pages/Carriers';
@@ -13,8 +13,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' exact element={<Home />} />
-          <Route path='/products' exact element={<Products />} />
-          <Route path='/orders' exact element={<Orders />} />
+          <Route path='/page_accueil' exact element={<MainPage />} />
+          <Route path='/clients' exact element={<Client />} />
           <Route path='/customers' exact element={<Customers />} />
           <Route path='/analytics' exact element={<Analytics />} />
           <Route path='/carriers' exact element={<Carriers />} />
