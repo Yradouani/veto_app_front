@@ -142,7 +142,7 @@ const Customers = () => {
             <Navbar></Navbar>
             <div className='page_content'>
                 <div className={openModal ? 'open_modal' : 'close_modal'}>
-                    <div>
+                    <div className='modal_header'>
                         <h2>Ajouter un nouveau client</h2>
                         <ImCross onClick={() => setOpenModal(false)} />
                     </div>
