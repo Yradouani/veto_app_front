@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import MainPage from './pages/MainPage';
 import Customers from './pages/Customers';
 import { useState } from 'react';
+import CustomersProfile from './pages/CustomersProfile';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -14,6 +15,7 @@ function App() {
           <Route path='/' exact element={<Home />} />
           <Route path='/page_accueil' exact element={<MainPage />} />
           <Route path='/clients' exact element={<Customers />} />
+          <Route path='/profil_client/id=:id' exact element={<CustomersProfile />} />
         </Routes>
       </BrowserRouter>
     </div>

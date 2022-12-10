@@ -7,15 +7,17 @@ import { ImCross } from "react-icons/im";
 import { CgDanger } from "react-icons/cg";
 import { BsPencilSquare } from "react-icons/bs";
 import { BsCheckLg } from "react-icons/bs";
+import { useNavigate } from 'react-router-dom'
 // import AuthContext from '../context/AuthProvider';
 
 const Customers = () => {
+    const navigate = useNavigate();
+
     const [openModal, setOpenModal] = useState(false);
     const [clients, setClients] = useState([]);
     // const { auth } = useContext(AuthContext);
     // console.log(auth.id);
     const id = localStorage.getItem('userId');
-    console.log(id);
 
     const ADD_CLIENT_URL = '/user/client';
     const GET_CLIENTS = 'user/veterinary/';
@@ -54,8 +56,6 @@ const Customers = () => {
 
     useEffect(() => {
         const result = USER_REGEX.test(firstname);
-        console.log(result);
-        console.log(firstname);
         setValidFirstname(result);
         //eslint-disable-next-line
     }, [firstname])
@@ -68,8 +68,6 @@ const Customers = () => {
 
     useEffect(() => {
         const result = ADDRESS_REGEX.test(address);
-        console.log(result);
-        console.log(address);
         setValidAddress(result);
         //eslint-disable-next-line
     }, [address])
@@ -98,7 +96,7 @@ const Customers = () => {
 
     useEffect(() => {
         chargeClients();
-    }, [])
+    }, [openModal])
 
     const chargeClients = () => {
 
@@ -109,6 +107,16 @@ const Customers = () => {
             }
             )
             .catch(err => console.log(err))
+    }
+
+    const deleteClient = (id) => {
+        let clientSelected = clients.filter(i => i.id !== id);
+        console.log(clientSelected)
+        setClients(clientSelected);
+    }
+
+    const showCustomerProfile = (id) => {
+        navigate(`/profil_client/id=${id}`);
     }
 
     const addNewClient = async (e) => {
@@ -366,27 +374,28 @@ const Customers = () => {
                     <table>
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Titre</th>
+                                <th></th>
                                 <th scope="col">Prénom</th>
                                 <th scope="col">Nom</th>
                                 <th scope="col">Adresse e-mail</th>
-                                <th scope="col">Ventes</th>
-                                <th scope="col">Inscription</th>
+                                <th scope="col">Date d'inscription</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>49885522</td>
-                                <td>Mme</td>
-                                <td>Yasmine</td>
-                                <td>Radouani</td>
-                                <td>yasmine.radouani@outlook.fr</td>
-                                <td>250$</td>
-                                <td>12/11/2022</td>
-                                <td><BsPencilSquare /></td>
-                                <td><FaTrashAlt /></td>
-                            </tr>
+                            {clients.map(client => {
+                                return (
+                                    <tr key={client.id}>
+                                        <td><button onClick={() => showCustomerProfile(client.id)}>Voir la fiche</button></td>
+                                        <td>{client.firstname}</td>
+                                        <td>{client.lastname}</td>
+                                        <td>{client.email}</td>
+                                        <td>{client.created_at}</td>
+                                        <td><BsPencilSquare /></td>
+                                        <td onClick={() => deleteClient(client.id)}><FaTrashAlt /></td>
+                                    </tr>
+                                )
+                            })}
+
                         </tbody>
                     </table>
                 </div>
