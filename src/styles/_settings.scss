@@ -14,11 +14,13 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Cabin', sans-serif;
+    height: 100%;
 
     .page_content {
         width: 80%;
         position: absolute;
         right: 0;
+        height: 100%;
 
         h1 {
             text-align: center;

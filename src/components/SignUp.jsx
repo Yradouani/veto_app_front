@@ -93,8 +93,6 @@ const SignUp = (props) => {
 
     useEffect(() => {
         const result = PWD_REGEX.test(pwd);
-        console.log(result);
-        console.log(pwd);
         setValidPwd(result);
         const match = pwd === matchPwd;
         setValidMatch(match);
@@ -181,7 +179,7 @@ const SignUp = (props) => {
                                     /></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2" id="siretnote" className={siretFocus && siret && !validSiret ? "instructions" : "offscreen"}>
+                                    <td colpan="2" id="siretnote" className={siretFocus && siret && !validSiret ? "instructions" : "offscreen"}>
                                         <CgDanger className='danger' />
                                         14 chiffres obligatoires
                                     </td>

@@ -1,18 +1,333 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import axios from '../api/axios';
 import Navbar from '../components/Navbar';
 import { AiFillPlusCircle } from "react-icons/ai";
 import { FaTrashAlt } from "react-icons/fa";
+import { ImCross } from "react-icons/im";
+import { CgDanger } from "react-icons/cg";
 import { BsPencilSquare } from "react-icons/bs";
+import { BsCheckLg } from "react-icons/bs";
+// import AuthContext from '../context/AuthProvider';
 
 const Customers = () => {
+    const [openModal, setOpenModal] = useState(false);
+    // const { auth } = useContext(AuthContext);
+    // console.log(auth.id);
+    const id = localStorage.getItem('userId');
+    console.log(id);
+
+    const ADD_CLIENT_URL = '/user/client';
+
+    //REGEX
+    const USER_REGEX = /^[a-zA-Z][a-zA-Z-_]{2,24}$/;
+    const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%£§&]).{8,24}$/;
+    const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const ADDRESS_REGEX = /^[a-zA-Z\s\d\/]*\d[a-zA-Z\s\d\/]*$/;
+    const PHONE_REGEX = /^[0-9]{10}$/;
+
+
+    const [firstname, setFirstname] = useState('');
+    const [validFirstname, setValidFirstname] = useState(false);
+    const [firstnameFocus, setFirstnameFocus] = useState(false);
+
+    const [lastname, setLastname] = useState('');
+    const [validLastname, setValidLastname] = useState(false);
+    const [lastnameFocus, setLastnameFocus] = useState(false);
+
+    const [address, setAddress] = useState('');
+    const [validAddress, setValidAddress] = useState(false);
+    const [addressFocus, setAddressFocus] = useState(false);
+
+    const [email, setEmail] = useState('');
+    const [validEmail, setValidEmail] = useState(false);
+    const [emailFocus, setEmailFocus] = useState(false);
+
+    const [phone, setPhone] = useState('');
+    const [validPhone, setValidPhone] = useState(false);
+    const [phoneFocus, setPhoneFocus] = useState(false);
+
+    const [pwd, setPwd] = useState('');
+    const [validPwd, setValidPwd] = useState(false);
+    const [pwdFocus, setPwdFocus] = useState(false);
+
+    useEffect(() => {
+        const result = USER_REGEX.test(firstname);
+        console.log(result);
+        console.log(firstname);
+        setValidFirstname(result);
+        //eslint-disable-next-line
+    }, [firstname])
+
+    useEffect(() => {
+        const result = USER_REGEX.test(lastname);
+        console.log(result);
+        console.log(lastname);
+        setValidLastname(result);
+        //eslint-disable-next-line
+    }, [lastname])
+
+    useEffect(() => {
+        const result = ADDRESS_REGEX.test(address);
+        console.log(result);
+        console.log(address);
+        setValidAddress(result);
+        //eslint-disable-next-line
+    }, [address])
+
+    useEffect(() => {
+        const result = PHONE_REGEX.test(phone);
+        console.log(result);
+        console.log(phone);
+        setValidPhone(result);
+        //eslint-disable-next-line
+    }, [phone])
+
+    useEffect(() => {
+        const result = EMAIL_REGEX.test(email);
+        console.log(result);
+        console.log(email);
+        setValidEmail(result);
+        //eslint-disable-next-line
+    }, [email])
+
+    useEffect(() => {
+        const result = PWD_REGEX.test(pwd);
+        setValidPwd(result);
+        //eslint-disable-next-line
+    }, [pwd])
+
+
+    const addNewClient = async (e) => {
+        e.preventDefault();
+
+        if (validFirstname && validLastname && validEmail && validPwd && validAddress && validPhone) {
+            try {
+                const response = await axios.post(
+                    ADD_CLIENT_URL,
+                    JSON.stringify({ firstname, lastname, address, email, phone, pwd, veterinary_id: id }),
+                    {
+                        headers: { 'Content-Type': 'application/json' },
+                        // withCredentials: true
+                    }
+                );
+                console.log(response.data);
+                console.log(JSON.stringify(response));
+            } catch (err) {
+                console.log(err);
+
+            }
+        } else {
+            console.log("Formulaire invalide");
+            return;
+        }
+
+    }
+
     return (
-        <div>
+        <div className='customer'>
             <Navbar></Navbar>
             <div className='page_content'>
+                <div className={openModal ? 'open_modal' : 'close_modal'}>
+                    <div>
+                        <h2>Ajouter un nouveau client</h2>
+                        <ImCross onClick={() => setOpenModal(false)} />
+                    </div>
+                    <form onSubmit={(e) => addNewClient(e)}>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <label htmlFor="firstname">Prénom * :
+                                            <span className={validFirstname ? "valid" : "hide"}>
+                                                <BsCheckLg />
+                                            </span>
+                                            <span className={validFirstname || !firstname ? "hide" : "invalid"}>
+                                                <ImCross />
+                                            </span>
+                                        </label>
+
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            id="firstname"
+                                            required
+                                            autoComplete='off'
+                                            aria-invalid={validFirstname ? "false" : "true"}
+                                            aria-describedby="firstnamenote"
+                                            onChange={(e) => setFirstname(e.target.value)}
+                                            onFocus={() => setFirstnameFocus(true)}
+                                            onBlur={() => setFirstnameFocus(false)}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" id="firstnamenote" className={firstnameFocus && firstname && !validFirstname ? "instructions" : "offscreen"}>
+                                        <CgDanger className='danger' />
+                                        Entre 3 et 23 lettres
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label htmlFor="lastname">Nom * :
+                                            <span className={validLastname ? "valid" : "hide"}>
+                                                <BsCheckLg />
+                                            </span>
+                                            <span className={validLastname || !lastname ? "hide" : "invalid"}>
+                                                <ImCross />
+                                            </span>
+                                        </label>
+
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            id="lastname"
+                                            required
+                                            autoComplete='off'
+                                            aria-invalid={validLastname ? "false" : "true"}
+                                            aria-describedby="lastnamenote"
+                                            onChange={(e) => setLastname(e.target.value)}
+                                            onFocus={() => setLastnameFocus(true)}
+                                            onBlur={() => setLastnameFocus(false)}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" id="lastnamenote" className={lastnameFocus && lastname && !validLastname ? "instructions" : "offscreen"}>
+                                        <CgDanger className='danger' />
+                                        Entre 3 et 23 lettres
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label htmlFor="address">Adresse * :
+                                            <span className={validAddress ? "valid" : "hide"}>
+                                                <BsCheckLg />
+                                            </span>
+                                            <span className={validAddress || !address ? "hide" : "invalid"}>
+                                                <ImCross />
+                                            </span></label>
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="text"
+                                            id="address"
+                                            required
+                                            autoComplete='off'
+                                            aria-invalid={validAddress ? "false" : "true"}
+                                            aria-describedby="addressnote"
+                                            onChange={(e) => setAddress(e.target.value)}
+                                            onFocus={() => setAddressFocus(true)}
+                                            onBlur={() => setAddressFocus(false)}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" id="addressnote" className={addressFocus && address && !validAddress ? "instructions" : "offscreen"}>
+                                        <CgDanger className='danger' />
+                                        Veuillez saisir une adresse correcte
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label htmlFor="email">Email * :
+                                            <span className={validEmail ? "valid" : "hide"}>
+                                                <BsCheckLg />
+                                            </span>
+                                            <span className={validEmail || !email ? "hide" : "invalid"}>
+                                                <ImCross />
+                                            </span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            required
+                                            autoComplete='off'
+                                            aria-invalid={validEmail ? "false" : "true"}
+                                            aria-describedby="emailnote"
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            onFocus={() => setEmailFocus(true)}
+                                            onBlur={() => setEmailFocus(false)}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" id="emailnote" className={emailFocus && email && !validEmail ? "instructions" : "offscreen"}>
+                                        <CgDanger className='danger' />
+                                        Veuillez saisir un email correct
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <label htmlFor="phone">Numéro de téléphone * :
+                                            <span className={validPhone ? "valid" : "hide"}>
+                                                <BsCheckLg />
+                                            </span>
+                                            <span className={validPhone || !phone ? "hide" : "invalid"}>
+                                                <ImCross />
+                                            </span>
+                                        </label>
+
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="tel"
+                                            id="phone"
+                                            required
+                                            autoComplete='off'
+                                            aria-invalid={validPhone ? "false" : "true"}
+                                            aria-describedby="phonenote"
+                                            onChange={(e) => setPhone(e.target.value)}
+                                            onFocus={() => setPhoneFocus(true)}
+                                            onBlur={() => setPhoneFocus(false)}
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" id="phonenote" className={phoneFocus && phone && !validPhone ? "instructions" : "offscreen"}>
+                                        <CgDanger className='danger' />
+                                        Veuillez saisir un numéro de téléphone de 10 chiffres
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><label htmlFor="pwd">Mot de passe * :
+                                        <span className={validPwd ? "valid" : "hide"}>
+                                            <BsCheckLg />
+                                        </span>
+                                        <span className={validPwd || !pwd ? "hide" : "invalid"}>
+                                            <ImCross />
+                                        </span>
+                                    </label></td>
+                                    <td><input
+                                        type="password"
+                                        id=""
+                                        required
+                                        aria-invalid={validPwd ? "false" : "true"}
+                                        aria-describedby="passwordnote"
+                                        onChange={(e) => setPwd(e.target.value)}
+                                        onFocus={() => setPwdFocus(true)}
+                                        onBlur={() => setPwdFocus(false)}
+                                    /></td>
+                                </tr>
+                                <tr >
+                                    <td colspan="2" id="passwordnote" className={pwdFocus && pwd && !validPwd ? "instructions" : "offscreen"}>
+                                        <CgDanger className='danger' />
+                                        8 caractères min, dont 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spécial
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <input type="submit" value="Ajouter" />
+                    </form>
+                </div>
                 <header>
                     <h1>Gérez vos clients</h1>
                     <div className='add_new_client'>
-                        <div className='add_new_client_content'>
+                        <div className='add_new_client_content' onClick={() => setOpenModal(true)}>
                             <AiFillPlusCircle />
                             <span>Ajouter un nouveau client</span>
                         </div>

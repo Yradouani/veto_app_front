@@ -5,7 +5,7 @@ import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
-    const { setAuth } = useContext(AuthContext);
+    // const { auth, setAuth } = useContext(AuthContext);
     const emailRef = useRef();
     const errRef = useRef();
 
@@ -14,7 +14,6 @@ const Login = () => {
     const [errMsg, setErrMsg] = useState('');
 
     const navigate = useNavigate();
-
 
     //Connection constant
     const LOGIN_URL = '/user/login';
@@ -44,9 +43,28 @@ const Login = () => {
             );
             console.log(JSON.stringify(response?.data));
             const accessToken = response?.data?.token;
-            // const roles = response?.data?.roles;
-            setAuth({ email, pwd, accessToken });
+            const userId = response?.data?.user.id;
+            const isClient = response?.data?.user.isClient;
+            console.log(isClient);
+            let type;
 
+            if (isClient) {
+                type = 'client';
+            } else {
+                type = 'veterinary';
+            }
+            // const firstname = response?.data?.user.firstname;
+            console.log(accessToken, type);
+
+            // const redirection = await setAuth({ email, accessToken, isClient, userId, firstname });
+            // console.log(redirection);
+
+            // console.log(auth.isClient);
+            // console.log(auth.userId);
+            console.log(type);
+            localStorage.setItem('userId', userId);
+            localStorage.setItem('type', type);
+            localStorage.setItem('accessToken', accessToken);
             navigate('/page_accueil');
 
         } catch (err) {

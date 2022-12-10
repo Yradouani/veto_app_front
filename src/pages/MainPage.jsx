@@ -1,50 +1,54 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import Navbar from '../components/Navbar';
+// import AuthContext from '../context/AuthProvider';
 import axios from '../api/axios';
+import { useState } from 'react';
 
-const Products = () => {
+const MainPage = () => {
+    // const { auth } = useContext(AuthContext);
+    const [data, setData] = useState({});
 
-    const USER_URL = '';
+    const USER_URL = '/user/veterinary/';
+    const id = localStorage.getItem('userId');
+    // const isClient = Number(localStorage.getItem('isClient'));
+    const type = localStorage.getItem('type');
+    console.log(id);
 
-    // useEffect(() => {
-    //     try {
-    //         const response = axios.get(
-    //             USER_URL,
-    //             JSON.stringify({ email, pwd }),
-    //             {
-    //                 headers: { 'Content-Type': 'application/json' },
-    //                 // withCredentials: true
-    //             }
-    //         );
-    //         console.log(JSON.stringify(response?.data));
-    //         const accessToken = response?.data?.token;
-    //         const roles = response?.data?.roles;
+    useEffect(() => {
+
+        if (type === "veterinary") {
+            axios.get(USER_URL + id)
+                .then(function (response) {
+                    setData(response.data);
+                }
+                )
+                .catch(err => console.log(err))
+        }
 
 
-    //     } catch (err) {
-    //         // console.log(err);
-    //         // if (!err?.response) {
-    //         //     setErrMsg('Pas de réponse du serveur');
-    //         // } else if (err.response?.status === 400) {
-    //         //     setErrMsg("Veuillez entrer votre email ET votre mot de passe");
-    //         // } else if (err.response?.status === 401) {
-    //         //     setErrMsg("Email et/ou mot de passe incorrect");
-    //         // } else {
-    //         //     setErrMsg('Connexion échouée')
-    //         // }
-    //         // errRef.current.focus();
-    //     }
-    // }, []);
+    }, []);
+
+    useEffect(() => {
+        console.log(data[0]?.firstname);
+    }, [data])
+
     return (
         <div>
             <Navbar></Navbar>
-            <div className='page_content'>
-                <h1>Bienvenue </h1>
+            {data[0]?.firstname ? (
+                <div className='page_content'>
+                    <h1>
+                        Bienvenue {data[0].firstname}
+                        <br />
+                        dans votre espace {type === 'client' ? "client" : "vétérinaire"}
+                    </h1>
 
-            </div>
+                </div>
+
+            ) : "chargement en cours"}
         </div>
     );
 };
 
-export default Products;
+export default MainPage;
