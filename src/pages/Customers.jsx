@@ -112,6 +112,20 @@ const Customers = () => {
                 );
                 console.log(response.data);
                 console.log(JSON.stringify(response));
+
+                setOpenModal(false);
+                setFirstname("");
+                setLastname("");
+                setAddress("");
+                setEmail("");
+                setPhone("");
+                setPwd("");
+                document.querySelector('#firstname').value = "";
+                document.querySelector('#lastname').value = "";
+                document.querySelector('#address').value = "";
+                document.querySelector('#email').value = "";
+                document.querySelector('#phone').value = "";
+                document.querySelector('#pwd').value = "";
             } catch (err) {
                 console.log(err);
 
@@ -304,7 +318,7 @@ const Customers = () => {
                                     </label></td>
                                     <td><input
                                         type="password"
-                                        id=""
+                                        id="pwd"
                                         required
                                         aria-invalid={validPwd ? "false" : "true"}
                                         aria-describedby="passwordnote"

@@ -179,7 +179,7 @@ const SignUp = (props) => {
                                     /></td>
                                 </tr>
                                 <tr>
-                                    <td colpan="2" id="siretnote" className={siretFocus && siret && !validSiret ? "instructions" : "offscreen"}>
+                                    <td colspan="2" id="siretnote" className={siretFocus && siret && !validSiret ? "instructions" : "offscreen"}>
                                         <CgDanger className='danger' />
                                         14 chiffres obligatoires
                                     </td>
