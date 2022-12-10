@@ -11,12 +11,14 @@ import { BsCheckLg } from "react-icons/bs";
 
 const Customers = () => {
     const [openModal, setOpenModal] = useState(false);
+    const [clients, setClients] = useState([]);
     // const { auth } = useContext(AuthContext);
     // console.log(auth.id);
     const id = localStorage.getItem('userId');
     console.log(id);
 
     const ADD_CLIENT_URL = '/user/client';
+    const GET_CLIENTS = 'user/veterinary/';
 
     //REGEX
     const USER_REGEX = /^[a-zA-Z][a-zA-Z-_]{2,24}$/;
@@ -60,8 +62,6 @@ const Customers = () => {
 
     useEffect(() => {
         const result = USER_REGEX.test(lastname);
-        console.log(result);
-        console.log(lastname);
         setValidLastname(result);
         //eslint-disable-next-line
     }, [lastname])
@@ -96,6 +96,20 @@ const Customers = () => {
         //eslint-disable-next-line
     }, [pwd])
 
+    useEffect(() => {
+        chargeClients();
+    }, [])
+
+    const chargeClients = () => {
+
+        axios.get(GET_CLIENTS + id + '/clients')
+            .then(function (response) {
+                console.log(response.data);
+                setClients(response.data);
+            }
+            )
+            .catch(err => console.log(err))
+    }
 
     const addNewClient = async (e) => {
         e.preventDefault();
