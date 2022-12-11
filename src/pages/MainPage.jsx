@@ -44,7 +44,7 @@ const MainPage = () => {
                         <br />
                         dans votre espace {type === 'client' ? "client" : "vétérinaire"}
                     </h1>
-                    <p>Parcourez la première application de rappel vaccinal automatisé</p>
+                    <h2>Parcourez la première application de rappel vaccinal automatisé</h2>
                 </div>
 
             ) : "chargement en cours"}

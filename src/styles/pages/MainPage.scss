@@ -3,6 +3,7 @@
         width: 100%;
         position: absolute;
         top: 0;
+        z-index: -10;
     }
 
     .page_content {
@@ -16,7 +17,7 @@
 
         }
 
-        p {
+        h2 {
             font-size: 18px;
             color: $color-6;
             font-weight: bold;
