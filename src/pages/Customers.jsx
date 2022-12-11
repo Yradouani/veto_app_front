@@ -161,7 +161,8 @@ const Customers = () => {
 
     return (
         <div className='customer'>
-            <Navbar></Navbar>
+            <img src="Untitled(1).png" alt="" className='background' />
+            <Navbar />
             <div className='page_content'>
                 <div className={openModal ? 'open_modal' : 'close_modal'}>
                     <div className='modal_header'>
