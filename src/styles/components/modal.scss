@@ -39,8 +39,17 @@
                 padding: 10px 20px;
                 font-size: 15px;
                 font-weight: bold;
-                background: green;
+                background: $color-1;
                 margin: 20px auto;
+                cursor: pointer;
+                color: white;
+                transition: all 0.2s ease-in-out;
+
+                &:hover {
+                    background-color: rgb(161, 203, 246);
+                    color: black;
+                    transform: scale(1.01);
+                }
             }
 
             .instructions {

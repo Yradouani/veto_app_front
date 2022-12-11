@@ -26,8 +26,8 @@ const CustomersProfile = () => {
     }
 
     return (
-        <div>
-            <img src="Untitled(1).png" alt="" className='background' />
+        <div className='customer-profile'>
+            <img src="../../Untitled(1).png" alt="" className='background' />
             <Navbar />
             <h1>
                 Profile du client : {userInfos?.firstname} {userInfos?.lastname}

@@ -29,7 +29,7 @@ const Navbar = () => {
                     </div>
                 </div>
             ) : ""}
-            <img src="logo.png" alt="logo" className='logo' />
+            <img src="../../logo.png" alt="logo" className='logo' />
             <div id="search_field">
                 <AiOutlineSearch />
                 <input type="text" name="search" id="search_field_input" placeholder="Rechercher" maxlength="20" />

@@ -1,27 +1,30 @@
-.page_content {
-    header {
-        .add_new_client {
-            display: flex;
-            align-items: end;
-
-            .add_new_client_content {
+.customer {
+    .page_content {
+        header {
+            .add_new_client {
                 display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin: 30px;
-                cursor: pointer;
-                transition: all 0.1s ease-in-out;
+                align-items: end;
 
-                &:hover {
-                    transform: scale(1.01);
+                .add_new_client_content {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    margin: 30px;
+                    cursor: pointer;
+                    transition: all 0.1s ease-in-out;
+
+                    &:hover {
+                        transform: scale(1.01);
+                    }
                 }
-            }
 
-            svg {
-                font-size: 30px;
-                color: $color-1;
-            }
+                svg {
+                    font-size: 30px;
+                    color: $color-1;
+                }
 
+            }
         }
     }
+
 }

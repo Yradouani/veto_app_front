@@ -157,12 +157,12 @@ table thead tr th {
   padding-bottom: 10px;
 }
 
-.page_content header .add_new_client {
+.customer .page_content header .add_new_client {
   display: flex;
   align-items: end;
 }
 
-.page_content header .add_new_client .add_new_client_content {
+.customer .page_content header .add_new_client .add_new_client_content {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -171,11 +171,11 @@ table thead tr th {
   transition: all 0.1s ease-in-out;
 }
 
-.page_content header .add_new_client .add_new_client_content:hover {
+.customer .page_content header .add_new_client .add_new_client_content:hover {
   transform: scale(1.01);
 }
 
-.page_content header .add_new_client svg {
+.customer .page_content header .add_new_client svg {
   font-size: 30px;
   color: #75b6fe;
 }
