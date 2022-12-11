@@ -104,6 +104,7 @@ const Customers = () => {
             .then(function (response) {
                 console.log(response.data);
                 setClients(response.data);
+                console.log(clients);
             }
             )
             .catch(err => console.log(err))
@@ -363,43 +364,56 @@ const Customers = () => {
                 </div>
                 <header>
                     <h1>Gérez vos clients</h1>
-                    <div className='add_new_client'>
-                        <div className='add_new_client_content' onClick={() => setOpenModal(true)}>
-                            <AiFillPlusCircle />
-                            <span>Ajouter un nouveau client</span>
+                    {(clients.length !== 0) ? (
+                        <div className='add_new_client'>
+                            <div className='add_new_client_content' onClick={() => setOpenModal(true)}>
+                                <AiFillPlusCircle />
+                                <span>Ajouter un nouveau client</span>
+                            </div>
+                        </div>
+                    ) : ""}
+                </header>
+
+                {(clients.length !== 0) ? (
+                    <div className='orders_content'>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th scope="col">Prénom</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Adresse e-mail</th>
+                                    <th scope="col">Date d'inscription</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {clients.map(client => {
+                                    return (
+                                        <tr key={client.id}>
+                                            <td><button onClick={() => showCustomerProfile(client.id)}>Voir la fiche</button></td>
+                                            <td>{client.firstname}</td>
+                                            <td>{client.lastname}</td>
+                                            <td>{client.email}</td>
+                                            <td>{client.created_at}</td>
+                                            <td className='update_btn'><BsPencilSquare /></td>
+                                            <td onClick={() => deleteClient(client.id)} className='delete_btn'><FaTrashAlt /></td>
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                ) : (
+                    <div className='noclient-content'>
+                        <p>Vous n'avez aucun clients dans votre espace</p>
+                        <div className='add_new_client'>
+                            <div className='add_new_client_content' onClick={() => setOpenModal(true)}>
+                                <AiFillPlusCircle />
+                                <span>Ajouter un nouveau client</span>
+                            </div>
                         </div>
                     </div>
-
-                </header>
-                <div className='orders_content'>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th scope="col">Prénom</th>
-                                <th scope="col">Nom</th>
-                                <th scope="col">Adresse e-mail</th>
-                                <th scope="col">Date d'inscription</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {clients.map(client => {
-                                return (
-                                    <tr key={client.id}>
-                                        <td><button onClick={() => showCustomerProfile(client.id)}>Voir la fiche</button></td>
-                                        <td>{client.firstname}</td>
-                                        <td>{client.lastname}</td>
-                                        <td>{client.email}</td>
-                                        <td>{client.created_at}</td>
-                                        <td><BsPencilSquare /></td>
-                                        <td onClick={() => deleteClient(client.id)}><FaTrashAlt /></td>
-                                    </tr>
-                                )
-                            })}
-
-                        </tbody>
-                    </table>
-                </div>
+                )}
             </div>
         </div>
     );

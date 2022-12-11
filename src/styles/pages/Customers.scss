@@ -1,9 +1,14 @@
 .customer {
     .page_content {
         header {
+            h1 {
+                text-align: center;
+                margin-top: 100px;
+            }
+
             .add_new_client {
                 display: flex;
-                align-items: end;
+                justify-content: flex-end;
 
                 .add_new_client_content {
                     display: flex;
@@ -24,6 +29,63 @@
                 }
 
             }
+        }
+
+        .noclient-content {
+            text-align: center;
+            margin-top: 100px;
+
+            p {
+                font-size: 20px;
+            }
+
+            .add_new_client_content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: orange;
+                cursor: pointer;
+                transition: all 0.1s;
+
+                svg {
+                    font-size: 30px;
+                }
+
+                span {
+                    font-size: 18px;
+                }
+
+                &:hover {
+                    transform: scale(1.01);
+                }
+            }
+        }
+    }
+
+    thead {
+        th {
+            font-size: 18px;
+        }
+    }
+
+    tbody {
+
+        button {
+            border: none;
+            background: orange;
+            padding: 10px 15px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        td {
+            text-align: start;
+            padding: 0 !important;
+        }
+
+        .delete_btn,
+        .update_btn {
+            cursor: pointer;
         }
     }
 

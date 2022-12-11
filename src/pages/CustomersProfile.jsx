@@ -10,6 +10,9 @@ const CustomersProfile = () => {
     const GET_CLIENT = '/user/client/';
     const [userInfos, setUserInfos] = useState({});
 
+    // var mySQLdate = userInfos?.created_at;
+    // const created_date = new Date(Date.parse(mySQLdate.replace(/-/g, '/')));
+
     useEffect(() => {
         getDataClient();
     }, [])
@@ -29,11 +32,24 @@ const CustomersProfile = () => {
         <div className='customer-profile'>
             <img src="../../Untitled(1).png" alt="" className='background' />
             <Navbar />
-            <h1>
-                Profile du client : {userInfos?.firstname} {userInfos?.lastname}
-            </h1>
-            <div>
-
+            <div className='card_container'>
+                <h1>
+                    Profile du client : {userInfos?.firstname} {userInfos?.lastname}
+                </h1>
+                <div className='infos_container'>
+                    <div><span>Date de création de la fiche :  </span></div>
+                    <div><span>Adresse : </span>{userInfos?.address}</div>
+                    <div><span>Numéro de téléphone : </span>{userInfos?.phone}</div>
+                    <div><span>Adresse email : </span>{userInfos?.email}</div>
+                    <div className='btn_container'>
+                        <button>Modifier</button>
+                        <button>Supprimer</button>
+                    </div>
+                </div>
+                <hr />
+                <div>
+                    <h2>Ses animaux</h2>
+                </div>
             </div>
         </div>
     );
