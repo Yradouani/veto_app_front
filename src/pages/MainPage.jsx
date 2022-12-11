@@ -34,7 +34,8 @@ const MainPage = () => {
     }, [data])
 
     return (
-        <div>
+        <div className='main-page'>
+            <img src="background.png" alt="" className='background' />
             <Navbar></Navbar>
             {data[0]?.firstname ? (
                 <div className='page_content'>
@@ -43,7 +44,7 @@ const MainPage = () => {
                         <br />
                         dans votre espace {type === 'client' ? "client" : "vétérinaire"}
                     </h1>
-
+                    <p>Parcourez la première application de rappel vaccinal automatisé</p>
                 </div>
 
             ) : "chargement en cours"}

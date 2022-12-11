@@ -150,7 +150,6 @@ const SignUp = (props) => {
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
                         {errMsg}
                     </p>
-                    <h2>S'inscrire</h2>
                     <form onSubmit={(e) => handleRegister(e)}>
                         <table>
                             <tbody>
@@ -382,7 +381,6 @@ const SignUp = (props) => {
                             <input
                                 type="submit"
                                 value="S'inscrire"
-                                disabled={!validSiret || !validFirstName || !validLastName || !validEmail || !validPwd || !validMatch ? true : false}
                             />
                         </div>
                     </form>

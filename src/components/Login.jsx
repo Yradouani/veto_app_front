@@ -92,7 +92,6 @@ const Login = () => {
             >
                 {errMsg}
             </p>
-            <h2>Se connecter</h2>
             <form onSubmit={e => handleRegister(e)}>
                 <table>
                     <tbody>
