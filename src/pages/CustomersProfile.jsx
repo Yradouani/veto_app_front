@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { AiFillPlusCircle } from "react-icons/ai";
 import Navbar from '../components/Navbar';
 import axios from '../api/axios';
 import { useState } from 'react';
@@ -8,10 +9,13 @@ import { useEffect } from 'react';
 const CustomersProfile = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+
     const GET_CLIENT = '/user/client/';
     const GET_ANIMALS = 'user/client/';
+
     const [userInfos, setUserInfos] = useState({});
     const [animals, setAnimals] = useState([]);
+    const [openModal, setOpenModal] = useState(false);
 
     // var mySQLdate = userInfos?.created_at;
     // const created_date = new Date(Date.parse(mySQLdate.replace(/-/g, '/')));
@@ -81,11 +85,43 @@ const CustomersProfile = () => {
                             })}
                         </div>
                     ) : (
-                        <div>
+                        <div className='noanimal'>
                             Pas encore d'animal enregistré
+                            <div className='add_new_client_content' onClick={() => setOpenModal(true)}>
+                                <AiFillPlusCircle />
+                                <span>Ajouter un nouvel animal</span>
+                            </div>
                         </div>
+
                     )}
                 </div>
+            </div>
+            <div className={openModal ? "open_modal" : "close_modal"}>
+                <form >
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><label htmlFor="name">Nom * : </label></td>
+                                <td><input type="text" /></td>
+                            </tr>
+                            <tr>
+                                <td><label htmlFor="type">Type * : </label></td>
+                                <td>inp</td>
+                            </tr>
+                            <tr>
+                                <td><label htmlFor="sexe">Sexe * : </label></td>
+                                <td>
+                                    <input type="radio" name="" id="sexe" value="male" />Mâle
+                                    <input type="radio" name="" id="sexe" value="femelle" />Femelle
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label htmlFor="date">Date de naissance : </label></td>
+                                <td><input type="date" name="" id="date" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
             </div>
         </div>
     );
