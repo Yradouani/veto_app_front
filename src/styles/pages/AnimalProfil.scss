@@ -1,0 +1,58 @@
+.animal_profil {
+
+
+    h1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            margin-right: 20px;
+        }
+    }
+
+    .profil_content {
+        background-image: url('../../../public/backdog.jpg');
+        background-position: center center;
+        background-size: cover;
+        width: 400px;
+        margin: 30px auto;
+        padding: 40px;
+
+        .profil_infos {
+            background: white;
+            padding: 30px;
+        }
+
+        div {
+            margin: 5px 0;
+
+            span {
+                font-weight: bold;
+                color: black;
+            }
+        }
+
+        .btn_container {
+            display: flex;
+            justify-content: center;
+            margin: 20px auto;
+
+            button {
+                background: $color-1;
+                border: none;
+                padding: 10px;
+                color: white;
+                margin: 10px;
+                font-size: 15px;
+                cursor: pointer;
+                transition: all 0.2s ease-in-out;
+
+                &:hover {
+                    background: rgb(132, 203, 250);
+                    color: black;
+                }
+            }
+        }
+    }
+}

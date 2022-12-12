@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom'
 const Customers = () => {
     const navigate = useNavigate();
     const errRef = useRef();
-
+    const [charge, setCharge] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     const [clients, setClients] = useState([]);
     const [errMsg, setErrMsg] = useState("");
@@ -108,15 +108,29 @@ const Customers = () => {
                 console.log(response.data);
                 setClients(response.data);
                 console.log(clients);
+                setCharge(true);
             }
             )
             .catch(err => console.log(err))
     }
 
-    const deleteClient = (id) => {
-        let clientSelected = clients.filter(i => i.id !== id);
+    const deleteClient = (idClient) => {
+        let clientSelected = clients.filter(i => i.id !== idClient);
         console.log(clientSelected)
         setClients(clientSelected);
+
+        try {
+            axios.delete("/client/" + idClient)
+                .then(function (response) {
+                    console.log(response.data);
+                    console.log(clients);
+                }
+                )
+                .catch(err => console.log(err))
+        } catch (err) {
+
+        }
+
     }
 
     const showCustomerProfile = (id) => {
@@ -381,6 +395,7 @@ const Customers = () => {
                         <input type="submit" value="Ajouter" />
                     </form>
                 </div>
+
                 <header>
                     <h1>Gérez vos clients</h1>
                     {(clients.length !== 0) ? (

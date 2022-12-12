@@ -5,6 +5,7 @@ import Customers from './pages/Customers';
 import Animals from './pages/Animals';
 import { useState } from 'react';
 import CustomersProfile from './pages/CustomersProfile';
+import AnimalProfil from './pages/AnimalProfil';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,6 +18,7 @@ function App() {
           <Route path='/page_accueil' exact element={<MainPage />} />
           <Route path='/clients' exact element={<Customers />} />
           <Route path='/profil_client/id=:id' exact element={<CustomersProfile />} />
+          <Route path='/profil_animal/id=:id' exact element={<AnimalProfil />} />
           <Route path='/animaux' exact element={<Animals />} />
         </Routes>
       </BrowserRouter>
