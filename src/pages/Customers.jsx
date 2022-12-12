@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import axios from '../api/axios';
 import Navbar from '../components/Navbar';
 import { AiFillPlusCircle } from "react-icons/ai";
@@ -12,9 +12,12 @@ import { useNavigate } from 'react-router-dom'
 
 const Customers = () => {
     const navigate = useNavigate();
+    const errRef = useRef();
 
     const [openModal, setOpenModal] = useState(false);
     const [clients, setClients] = useState([]);
+    const [errMsg, setErrMsg] = useState("");
+
     // const { auth } = useContext(AuthContext);
     // console.log(auth.id);
     const id = localStorage.getItem('userId');
@@ -120,6 +123,20 @@ const Customers = () => {
         navigate(`/profil_client/id=${id}`);
     }
 
+    const resetInfosClient = () => {
+        setFirstname("");
+        setLastname("");
+        setAddress("");
+        setEmail("");
+        setPhone("");
+        setPwd("");
+        document.querySelector('#firstname').value = "";
+        document.querySelector('#lastname').value = "";
+        document.querySelector('#address').value = "";
+        document.querySelector('#email').value = "";
+        document.querySelector('#phone').value = "";
+        document.querySelector('#pwd').value = "";
+    }
     const addNewClient = async (e) => {
         e.preventDefault();
 
@@ -137,20 +154,15 @@ const Customers = () => {
                 console.log(JSON.stringify(response));
 
                 setOpenModal(false);
-                setFirstname("");
-                setLastname("");
-                setAddress("");
-                setEmail("");
-                setPhone("");
-                setPwd("");
-                document.querySelector('#firstname').value = "";
-                document.querySelector('#lastname').value = "";
-                document.querySelector('#address').value = "";
-                document.querySelector('#email').value = "";
-                document.querySelector('#phone').value = "";
-                document.querySelector('#pwd').value = "";
+                resetInfosClient();
             } catch (err) {
                 console.log(err);
+                if (err.response?.status === 422) {
+                    setErrMsg('Email déjà utilisé');
+                    setValidEmail(false);
+                } else {
+                    setErrMsg('Formulaire invalide');
+                }
 
             }
         } else {
@@ -168,9 +180,16 @@ const Customers = () => {
                 <div className={openModal ? 'open_modal' : 'close_modal'}>
                     <div className='modal_header'>
                         <h2>Ajouter un nouveau client</h2>
-                        <ImCross onClick={() => setOpenModal(false)} />
+                        <ImCross onClick={() => {
+                            setOpenModal(false);
+                            setErrMsg("");
+                            resetInfosClient();
+                        }} />
                     </div>
                     <form onSubmit={(e) => addNewClient(e)}>
+                        <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">
+                            {errMsg}
+                        </p>
                         <table>
                             <tbody>
                                 <tr>
