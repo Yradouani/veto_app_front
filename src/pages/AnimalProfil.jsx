@@ -25,6 +25,11 @@ const AnimalProfil = () => {
             )
             .catch(err => console.log(err))
     }
+
+    const getProprioAnimal = () => {
+
+    }
+
     return (
         <div className='animal_profil'>
             <img src="../../Untitled(1).png" alt="" className='background' />
@@ -33,12 +38,13 @@ const AnimalProfil = () => {
 
             <div className='profil_content'>
                 <div className='profil_infos'>
+                    <div><span>Propriétaire : </span></div>
                     <div><span>Nom : </span>{animalInfos.name}</div>
                     <div><span>Type : </span>{animalInfos.type}</div>
                     <div><span>Date de naissance : </span>{animalInfos.date_of_birth}</div>
                     <div><span>Sexe : </span>{animalInfos.sexe}</div>
-                    <div><span>Poids : </span></div>
-                    <div><span>Taille : </span></div>
+                    <div><span>Poids : </span>{animalInfos.weight} g</div>
+                    <div><span>Taille : </span>{animalInfos.size} cm</div>
                     <div><span>Antécédents médicaux : </span></div>
                     <div><span>Dates des vaccinations : </span></div>
                     <div><span>Dates des rendez-vous : </span></div>

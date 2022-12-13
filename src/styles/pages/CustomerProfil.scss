@@ -56,6 +56,18 @@
             text-align: center;
         }
 
+        h3 {
+            text-align: center;
+            margin: 0;
+            color: orange;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+                transform: scale(1.03);
+            }
+        }
+
         .animal_container {
             display: flex;
 
@@ -111,11 +123,43 @@
 
     .open_modal {
         display: flex;
-        background-color: black;
+        background-color: white;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        padding: 30px;
+        border: 1px solid black;
+
+        h2 {
+            text-align: center;
+        }
+
+        tr,
+        td {
+            padding: 7px;
+        }
+
+        .btn_container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+
+            button {
+                border: none;
+                background: orange;
+                padding: 10px;
+                cursor: pointer;
+                font-size: 15px;
+                margin: 10px;
+                color: white;
+                transition: all 0.2s ease-in-out;
+
+                &:hover {
+                    background: rgb(251, 182, 53);
+                }
+            }
+        }
     }
 
     .close_modal {
