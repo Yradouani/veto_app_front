@@ -8,26 +8,51 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 const AnimalProfil = () => {
     const { id } = useParams();
     const [animalInfos, setAnimalInfos] = useState([]);
+    const [proprioInfos, setProprioInfos] = useState([]);
     const GET_ANIMAL = '/animal/';
-
+    const [clientId, setClientId] = useState();
 
     useEffect(() => {
         getDataAnimal();
     }, []);
+
+    useEffect(() => {
+        if (clientId) {
+            console.log(clientId);
+            axios.get("/user/client/" + clientId)
+                .then(function (response) {
+                    console.log(response.data);
+                    setProprioInfos(response.data)
+                }
+                )
+                .catch(err => console.log(err))
+        }
+    }, [clientId])
 
     const getDataAnimal = () => {
 
         axios.get(GET_ANIMAL + id)
             .then(function (response) {
                 console.log(response.data);
-                setAnimalInfos(response.data)
+                setAnimalInfos(response.data);
+                setClientId(response.data.client_id);
+                console.log(clientId);
             }
             )
             .catch(err => console.log(err))
     }
 
-    const getProprioAnimal = () => {
-
+    const getProprioAnimal = (id_client) => {
+        // if (id_client) {
+        //     console.log(id_client);
+        //     axios.get("/user/client/" + id_client)
+        //         .then(function (response) {
+        //             console.log(response.data);
+        //             setProprioInfos(response.data)
+        //         }
+        //         )
+        //         .catch(err => console.log(err))
+        // }
     }
 
     return (
@@ -38,7 +63,7 @@ const AnimalProfil = () => {
 
             <div className='profil_content'>
                 <div className='profil_infos'>
-                    <div><span>Propriétaire : </span></div>
+                    <div><span>Propriétaire : </span>{proprioInfos.firstname} {proprioInfos.lastname}</div>
                     <div><span>Nom : </span>{animalInfos.name}</div>
                     <div><span>Type : </span>{animalInfos.type}</div>
                     <div><span>Date de naissance : </span>{animalInfos.date_of_birth}</div>
@@ -49,8 +74,7 @@ const AnimalProfil = () => {
                     <div><span>Dates des vaccinations : </span></div>
                     <div><span>Dates des rendez-vous : </span></div>
                     <div className='btn_container'>
-                        <button>Modifier</button>
-                        <button>Supprimer</button>
+                        <button>Modifier le carnet</button>
                     </div>
                 </div>
             </div>

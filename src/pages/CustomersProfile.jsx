@@ -51,20 +51,6 @@ const CustomersProfile = () => {
         getAnimals();
     }, [])
 
-    const resetInfosForm = () => {
-        setName("");
-        setType("");
-        setDateOfBirth("");
-        setSexe("");
-        setWeight("");
-        setSize("");
-        document.querySelector('#name').value = "";
-        document.querySelector('#type').value = "";
-        document.querySelector('#date').value = "";
-        document.querySelector('#weight').value = "";
-        document.querySelector('#size').value = "";
-        document.querySelector('#sexe').value = "";
-    }
     const addNewAnimal = async (e) => {
         e.preventDefault();
         console.log(name, type, sexe, dateOfBirth, weight, size);
@@ -83,7 +69,7 @@ const CustomersProfile = () => {
             let animal = response.data;
             animals.push(animal);
             setOpenModal(false);
-            resetInfosForm();
+            document.querySelector("form").reset();
         } catch (err) {
             console.log(err);
         }
@@ -186,12 +172,12 @@ const CustomersProfile = () => {
                                 <td><label htmlFor="type">Type * : </label></td>
                                 <td>
                                     <select name="" id="type" onChange={(e) => setType(e.target.value)}>
-                                        <option value="chat">Chat</option>
-                                        <option value="chat">Chien</option>
-                                        <option value="chat">Lapin</option>
-                                        <option value="chat">Hamster</option>
-                                        <option value="chat">Tortue</option>
-                                        <option value="chat">Autre</option>
+                                        <option value="Chat">Chat</option>
+                                        <option value="Chien">Chien</option>
+                                        <option value="Lapin">Lapin</option>
+                                        <option value="Hamster">Hamster</option>
+                                        <option value="Tortue">Tortue</option>
+                                        <option value="Autre">Autre</option>
                                     </select>
                                 </td>
                             </tr>

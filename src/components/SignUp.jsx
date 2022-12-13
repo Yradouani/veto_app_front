@@ -61,32 +61,24 @@ const SignUp = (props) => {
 
     useEffect(() => {
         const result = SIRET_REGEX.test(siret);
-        console.log(result);
-        console.log(siret);
         setValidSiret(result);
         //eslint-disable-next-line
     }, [siret])
 
     useEffect(() => {
         const result = USER_REGEX.test(firstName);
-        console.log(result);
-        console.log(firstName);
         setValidFirstName(result);
         //eslint-disable-next-line
     }, [firstName])
 
     useEffect(() => {
         const result = USER_REGEX.test(lastName);
-        console.log(result);
-        console.log(lastName);
         setValidLastName(result);
         //eslint-disable-next-line
     }, [lastName])
 
     useEffect(() => {
         const result = EMAIL_REGEX.test(email);
-        console.log(result);
-        console.log(email);
         setValidEmail(result);
         //eslint-disable-next-line
     }, [email])

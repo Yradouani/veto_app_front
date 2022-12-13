@@ -441,7 +441,7 @@ const Customers = () => {
                     <div className='noclient-content'>
                         <p>Vous n'avez aucun clients dans votre espace</p>
                         <div className='add_new_client'>
-                            <div className='add_new_client_content' onClick={() => setOpenModal(true)}>
+                            <div className={openModal ? "none" : "add_new_client_content"} onClick={() => setOpenModal(true)}>
                                 <AiFillPlusCircle />
                                 <span>Ajouter un nouveau client</span>
                             </div>

@@ -70,6 +70,8 @@
 
         .animal_container {
             display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
 
             .animal_info_container {
                 background: orange;
@@ -78,6 +80,7 @@
                 padding: 15px;
                 display: flex;
                 flex-direction: column;
+                width: 100px;
 
                 span {
                     font-weight: bold;
@@ -145,7 +148,8 @@
             justify-content: center;
             margin-top: 20px;
 
-            button {
+            button,
+            input[type="submit"] {
                 border: none;
                 background: orange;
                 padding: 10px;

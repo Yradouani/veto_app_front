@@ -21,12 +21,16 @@ const MainPage = () => {
             axios.get(USER_URL + id)
                 .then(function (response) {
                     setData(response.data);
-                }
-                )
+                })
+                .catch(err => console.log(err))
+        } else if (type === "client") {
+            axios.get("/user/client/" + id)
+                .then(function (response) {
+                    setData(response.data);
+                    console.log(response.data);
+                })
                 .catch(err => console.log(err))
         }
-
-
     }, []);
 
     useEffect(() => {
