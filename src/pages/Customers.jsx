@@ -26,10 +26,10 @@ const Customers = () => {
     const GET_CLIENTS = 'user/veterinary/';
 
     //REGEX
-    const USER_REGEX = /^[a-zA-Z][a-zA-Z-_]{2,24}$/;
+    const USER_REGEX = /^[a-zA-Z][a-zA-Z-éÉèÈàÀùÙâÂêÊîÎôÔûÛïÏëËüÜçÇ]{2,24}$/;
     const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%£§&]).{8,24}$/;
     const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    const ADDRESS_REGEX = /^[a-zA-Z\s\d\/]*\d[a-zA-Z\s\d\/]*$/;
+    const ADDRESS_REGEX = /^[a-zA-Z-éÉèÈàÀùÙâÂêÊîÎôÔûÛïÏëËüÜçÇ\s\d\/]*\d[a-zA-Z-éÉèÈàÀùÙâÂêÊîÎôÔûÛïÏëËüÜçÇ\s\d\/]*$/;
     const PHONE_REGEX = /^[0-9]{10}$/;
 
 

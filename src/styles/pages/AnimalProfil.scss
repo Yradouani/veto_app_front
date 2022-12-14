@@ -37,6 +37,7 @@
             display: flex;
             justify-content: center;
             margin: 20px auto;
+            flex-direction: column;
 
             button {
                 background: $color-1;

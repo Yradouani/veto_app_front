@@ -115,13 +115,12 @@ const CustomersProfile = () => {
                     Profil du client : {userInfos?.firstname} {userInfos?.lastname}
                 </h1>
                 <div className='infos_container'>
-                    <div><span>Date de création de la fiche :  </span></div>
+                    <div><span>Date de création de la fiche : </span>{userInfos?.created_at?.slice(0, 10).split('-').reverse().join('/')}</div>
                     <div><span>Adresse : </span>{userInfos?.address}</div>
                     <div><span>Numéro de téléphone : </span>{userInfos?.phone}</div>
                     <div><span>Adresse email : </span>{userInfos?.email}</div>
                     <div className='btn_container'>
                         <button>Modifier</button>
-                        <button>Supprimer</button>
                     </div>
                 </div>
                 <hr />

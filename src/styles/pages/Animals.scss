@@ -4,6 +4,28 @@
         margin: 50px auto;
     }
 
+    #search_field {
+        text-align: center;
+        background: white;
+        width: 220px;
+        margin: auto;
+        height: 30px;
+        display: flex;
+        align-items: center;
+
+        input {
+            border: none;
+            font-size: 15px;
+            width: 90px;
+            outline: none;
+            color: black;
+        }
+
+        svg {
+            margin: auto 10px;
+        }
+    }
+
     .global_cards_container {
         flex-wrap: wrap;
         width: 90%;

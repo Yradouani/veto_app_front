@@ -17,7 +17,7 @@ const SignUp = (props) => {
     const errRef = useRef();
 
     //REGEX
-    const USER_REGEX = /^[a-zA-Z][a-zA-Z-_]{2,24}$/;
+    const USER_REGEX = /^[a-zA-Z][a-zA-Z-éÉèÈàÀùÙâÂêÊîÎôÔûÛïÏëËüÜçÇ]{2,24}$/;
     const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%£§&]).{8,24}$/;
     const SIRET_REGEX = /^[0-9]{14}$/;
     const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -62,6 +62,17 @@ const SignUp = (props) => {
     useEffect(() => {
         const result = SIRET_REGEX.test(siret);
         setValidSiret(result);
+
+        // axios.get("https://api.insee.fr/entreprises/sirene/V3/siret/" + siret,
+        //     {
+        //         headers: { 'Content-Type': 'application/json', 'Authorization': 'Et7XuM?7' },
+        //         // withCredentials: true
+        //     })
+        //     .then(function (response) {
+        //         console.log(response.data);
+        //     })
+        //     .catch(err => console.log(err))
+
         //eslint-disable-next-line
     }, [siret])
 

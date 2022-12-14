@@ -66,7 +66,7 @@ const AnimalProfil = () => {
                     <div><span>Propriétaire : </span>{proprioInfos.firstname} {proprioInfos.lastname}</div>
                     <div><span>Nom : </span>{animalInfos.name}</div>
                     <div><span>Type : </span>{animalInfos.type}</div>
-                    <div><span>Date de naissance : </span>{animalInfos.date_of_birth}</div>
+                    <div><span>Date de naissance : </span>{animalInfos?.date_of_birth?.split('-').reverse().join('/')}</div>
                     <div><span>Sexe : </span>{animalInfos.sexe}</div>
                     <div><span>Poids : </span>{animalInfos.weight} g</div>
                     <div><span>Taille : </span>{animalInfos.size} cm</div>
@@ -75,6 +75,7 @@ const AnimalProfil = () => {
                     <div><span>Dates des rendez-vous : </span></div>
                     <div className='btn_container'>
                         <button>Modifier le carnet</button>
+                        <button>Envoyer un rappel Vaccinal</button>
                     </div>
                 </div>
             </div>
