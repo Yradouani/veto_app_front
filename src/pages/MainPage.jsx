@@ -16,7 +16,6 @@ const MainPage = () => {
     console.log(id);
 
     useEffect(() => {
-
         if (type === "veterinary") {
             axios.get(USER_URL + id)
                 .then(function (response) {
@@ -26,8 +25,8 @@ const MainPage = () => {
         } else if (type === "client") {
             axios.get("/user/client/" + id)
                 .then(function (response) {
-                    setData(response.data);
-                    console.log(response.data);
+                    const infos = response.data;
+                    setData(infos);
                 })
                 .catch(err => console.log(err))
         }
@@ -37,21 +36,30 @@ const MainPage = () => {
         console.log(data[0]?.firstname);
     }, [data])
 
+    console.log(data);
+
     return (
         <div className='main-page'>
             <img src="background.png" alt="" className='background' />
             <Navbar></Navbar>
-            {data[0]?.firstname ? (
+            {data?.firstname ? (
                 <div className='page_content'>
                     <h1>
-                        Bienvenue {data[0].firstname}
+                        Bienvenue {data.firstname}
                         <br />
                         dans votre espace {type === 'client' ? "client" : "vétérinaire"}
                     </h1>
                     <h2>Parcourez la première application de rappel vaccinal automatisé</h2>
                 </div>
 
-            ) : "chargement en cours"}
+            ) : <div className='page_content'>
+            <h1>
+                Bienvenue {data[0]?.firstname}
+                <br />
+                dans votre espace {type === 'client' ? "client" : "vétérinaire"}
+            </h1>
+            <h2>Parcourez la première application de rappel vaccinal automatisé</h2>
+        </div>}
         </div>
     );
 };

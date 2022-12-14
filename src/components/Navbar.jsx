@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaUsers, FaPowerOff } from "react-icons/fa";
 import { AiFillDashboard, AiOutlineSearch } from "react-icons/ai";
+import { MdDateRange } from "react-icons/md";
 import { MdPets } from "react-icons/md";
 import AuthContext from '../context/AuthProvider';
 import { useState } from 'react';
@@ -46,6 +47,11 @@ const Navbar = () => {
                 <NavLink to="/animaux" className={(nav) => (nav.isActive ? "nav-active" : "")}>
                     <li><MdPets /> Mes animaux</li>
                 </NavLink>
+                {type === "client" ? (
+                    <NavLink to="/rendez-vous" className={(nav) => (nav.isActive ? "nav-active" : "")}>
+                        <li><MdDateRange /> Mes rendez-vous</li>
+                    </NavLink>
+                ) : ""}
                 <NavLink onClick={() => setOpenModal(true)}>
                     <li><FaPowerOff /></li>
                 </NavLink>

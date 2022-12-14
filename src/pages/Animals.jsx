@@ -9,22 +9,63 @@ const Animals = () => {
     const [animals, setAnimals] = useState([]);
     const navigate = useNavigate();
     const id = localStorage.getItem('userId');
+    const type = localStorage.getItem('type');
+    const [data, setData] = useState();
+    const [emailVeterinary, setEmailVeterinary] = useState("");
 
     const GET_ANIMALS = "/user/veterinary/";
 
     useEffect(() => {
         getAnimals();
+        getClientInfo();
+        getVeterinaryInfo();
     }, [])
 
-    const getAnimals = () => {
-        axios.get(GET_ANIMALS + id + '/animals')
+    const getClientInfo = () => {
+        if (type === "client") {
+            console.log("coucou")
+            axios.get("/user/client/" + id)
+                .then(function (response) {
+                    const infos = response.data;
+                    setData(infos);
+                })
+                .catch(err => console.log(err))
+        }
+    }
+    console.log(data);
+
+    const getVeterinaryInfo = () => {
+        axios.get("/user/veterinary/" + data.veterinary_id)
             .then(function (response) {
                 console.log(response.data);
-                setAnimals(response.data);
-                console.log(animals);
-            }
-            )
+                const infos = response.data;
+                console.log(infos[0].email)
+                setEmailVeterinary(infos[0].email);
+            })
             .catch(err => console.log(err))
+        console.log(emailVeterinary);
+    }
+
+    const getAnimals = () => {
+        if (type === "veterinaire") {
+            axios.get(GET_ANIMALS + id + '/animals')
+                .then(function (response) {
+                    console.log(response.data);
+                    setAnimals(response.data);
+                    console.log(animals);
+                }
+                )
+                .catch(err => console.log(err))
+        } else if (type === "client") {
+            axios.get("user/client/" + id + "/animals")
+                .then(function (response) {
+                    console.log(response.data);
+                    setAnimals(response.data);
+                    console.log(animals);
+                }
+                )
+                .catch(err => console.log(err))
+        }
     };
 
     const redirectToAnimalProfil = (id) => {
@@ -64,13 +105,18 @@ const Animals = () => {
                 <div className='noanimal-content'>
                     <p>Vous n'avez aucun animal dans votre espace</p>
                     <div className='add_new_animal'>
-                        <div
-                            className='add_new_client_content'
-                        // onClick={() => setOpenModal(true)}
-                        >
-                            <AiFillPlusCircle />
-                            <span>Ajouter un nouvel animal</span>
-                        </div>
+                        {(type === "veterinaire") ? (
+                            <div className='add_new_client_content'>
+                                <div ><AiFillPlusCircle /></div >
+                                <div>Ajouter un nouvel animal</div >
+                            </div>
+                        ) : (
+                            <div>
+                                <a href={"mailto:" + emailVeterinary}>
+                                    Demandez à votre vétérinaire d'ajouter un animal ?
+                                </a>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

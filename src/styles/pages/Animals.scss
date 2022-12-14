@@ -63,3 +63,23 @@
         }
     }
 }
+
+.noanimal-content {
+    text-align: center;
+
+    .add_new_animal {
+        display: flex;
+        flex-direction: column;
+        color: orange;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+            transform: scale(1.01);
+        }
+
+        svg {
+            font-size: 25px;
+        }
+    }
+}
