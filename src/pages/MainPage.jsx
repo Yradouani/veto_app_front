@@ -11,9 +11,18 @@ const MainPage = () => {
 
     const USER_URL = '/user/veterinary/';
     const id = localStorage.getItem('userId');
+
+    const [edit, setEdit] = useState(false);
+    const [editFirstname, setEditFirstname] = useState(false);
+    const [editLastname, setEditLastname] = useState(false);
+    const [editAddress, setEditAddress] = useState(false);
+    const [editPhone, setEditPhone] = useState(false);
+    const [editEmail, setEditEmail] = useState(false);
+    const [editSiret, setEditSiret] = useState(false);
     // const isClient = Number(localStorage.getItem('isClient'));
     const type = localStorage.getItem('type');
     console.log(id);
+    console.log(type);
 
     useEffect(() => {
         if (type === "veterinary") {
@@ -36,6 +45,59 @@ const MainPage = () => {
         console.log(data[0]?.firstname);
     }, [data])
 
+    const updateUser = async () => {
+        if (type === "client") {
+            try {
+                console.log(editAddress, editPhone, editEmail, editFirstname, editLastname);
+                console.log(data?.address, data?.phone, data?.email, data?.firstname, data?.lastname);
+                const response = await axios.put(
+                    "/client/" + data?.id,
+                    JSON.stringify({
+                        address: (editAddress ? editAddress : data?.address),
+                        phone: (editPhone ? editPhone : data?.phone),
+                        email: (editEmail ? editEmail : data?.email),
+                        veterinary_id: data?.veterinary_id,
+                        firstname: (editFirstname ? editFirstname : data?.firstname),
+                        lastname: (editLastname ? editLastname : data?.lastname)
+                    }),
+                    {
+                        headers: { 'Content-Type': 'application/json' },
+                        // withCredentials: true
+                    }
+                );
+                console.log(response.data);
+                setData(response.data);
+                setEdit(false);
+            } catch (err) {
+                console.log(err)
+            }
+        } else if (type === "veterinary") {
+            try {
+                console.log(editSiret, editEmail, editFirstname, editLastname);
+                console.log(data?.siret, data?.email, data?.firstname, data?.lastname);
+                const response = await axios.put(
+                    "/veterinary/" + data?.id,
+                    JSON.stringify({
+                        siret: (editSiret ? editSiret : data?.siret),
+                        email: (editEmail ? editEmail : data?.email),
+                        veterinary_id: data?.id,
+                        firstname: (editFirstname ? editFirstname : data?.firstname),
+                        lastname: (editLastname ? editLastname : data?.lastname)
+                    }),
+                    {
+                        headers: { 'Content-Type': 'application/json' },
+                        // withCredentials: true
+                    }
+                );
+                console.log(response.data);
+                setData(response.data);
+                setEdit(false);
+            } catch (err) {
+                console.log(err)
+            }
+        }
+    }
+
     console.log(data);
 
     return (
@@ -44,22 +106,92 @@ const MainPage = () => {
             <Navbar></Navbar>
             {data?.firstname ? (
                 <div className='page_content'>
-                    <h1>
-                        Bienvenue {data.firstname}
-                        <br />
-                        dans votre espace {type === 'client' ? "client" : "vétérinaire"}
-                    </h1>
-                    <h2>Parcourez la première application de rappel vaccinal automatisé</h2>
+                    <div className='user_infos_container'>
+                        <h1>
+                            Bienvenue {data.firstname}
+                            <br />
+                            dans votre espace {type === 'client' ? "client" : "vétérinaire"}
+                        </h1>
+                        <h2>Parcourez la première application de rappel vaccinal automatisé</h2>
+                        <h3>Vos informations personnelles</h3>
+                        <div><span>Date de création de mon compte : </span>{data?.created_at?.slice(0, 10).split('-').reverse().join('/')}</div>
+                        {(type === "veterinary") ? (
+                            <div><span>Siret : </span>{edit ? (
+                                <input
+                                    type="text"
+                                    defaultValue={editSiret ? editSiret : data?.siret}
+                                    onChange={(e) => setEditSiret(e.target.value)}
+                                />
+                            ) : (data?.siret)}</div>
+                        ) : ""}
+                        <div>
+                            <span>Nom : </span>{edit ? (
+                                <input
+                                    type="text"
+                                    defaultValue={editLastname ? editLastname : data?.lastname}
+                                    onChange={(e) => setEditLastname(e.target.value)}
+                                />
+                            ) : (data?.lastname)}
+                        </div>
+                        <div><span>Prénom : </span>{edit ? (
+                            <input
+                                type="text"
+                                defaultValue={editFirstname ? editFirstname : data?.firstname}
+                                onChange={(e) => setEditFirstname(e.target.value)}
+                            />
+                        ) : (data?.firstname)}</div>
+
+                        {(type === "client") ? (
+                            <div><span>Adresse postale : </span>{edit ? (
+                                <input
+                                    type="text"
+                                    defaultValue={editAddress ? editAddress : data?.address}
+                                    onChange={(e) => setEditAddress(e.target.value)}
+                                />
+                            ) : (data?.address)}</div>
+                        ) : ""}
+
+                        <div><span>Adresse email : </span>{edit ? (
+                            <input
+                                type="text"
+                                defaultValue={editEmail ? editEmail : data?.email}
+                                onChange={(e) => setEditEmail(e.target.value)}
+                            />
+                        ) : (data?.email)}</div>
+
+                        {(type === "client") ? (
+                            <div><span>Numéro de téléphone : </span>{edit ? (
+                                <input
+                                    type="text"
+                                    defaultValue={editPhone ? editPhone : data?.phone}
+                                    onChange={(e) => setEditPhone(e.target.value)}
+                                />
+                            ) : data?.phone}</div>
+                        ) : ""}
+
+                        <div className='btn_container'>
+                            {edit ?
+                                (<>
+                                    <button className='update_btn' onClick={() => setEdit(false)}>Annuler</button>
+                                    <button className='pwd_btn' onClick={() => updateUser()}>Confirmer</button>
+                                </>) : (
+                                    <>
+                                        <button className='update_btn' onClick={() => setEdit(true)}>Modifier mes informations personnelles</button>
+                                        <button className='pwd_btn'>Modifier mon mot de passe</button>
+                                    </>)
+                            }
+                        </div>
+                    </div>
                 </div>
 
             ) : <div className='page_content'>
-            <h1>
-                Bienvenue {data[0]?.firstname}
-                <br />
-                dans votre espace {type === 'client' ? "client" : "vétérinaire"}
-            </h1>
-            <h2>Parcourez la première application de rappel vaccinal automatisé</h2>
-        </div>}
+                <h1>
+                    Bienvenue {data[0]?.firstname}
+                    <br />
+                    dans votre espace {type === 'client' ? "client" : "vétérinaire"}
+                </h1>
+                <h2>Parcourez la première application de rappel vaccinal automatisé</h2>
+            </div>}
         </div>
     );
 };

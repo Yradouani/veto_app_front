@@ -7,6 +7,7 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 
 const AnimalProfil = () => {
     const { id } = useParams();
+    const type = localStorage.getItem('type');
     const [animalInfos, setAnimalInfos] = useState([]);
     const [proprioInfos, setProprioInfos] = useState([]);
     const GET_ANIMAL = '/animal/';
@@ -132,7 +133,8 @@ const AnimalProfil = () => {
                     <div><span>Antécédents médicaux : </span></div>
                     <div><span>Dates des vaccinations : </span></div>
                     <div><span>Dates des rendez-vous : </span></div>
-                    <div className='btn_container'>
+                    {(type === "veterinary") ? 
+                    (<div className='btn_container'>
                         {edit ?
                             (<div className='btn_update'>
                                 <button onClick={() => updateInfosAnimal()}>Valider</button>
@@ -142,6 +144,7 @@ const AnimalProfil = () => {
                         }
                         <button>Envoyer un rappel Vaccinal</button>
                     </div>
+                    ) : ""}
                 </div>
             </div>
 

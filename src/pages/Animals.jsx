@@ -13,6 +13,7 @@ const Animals = () => {
     const [data, setData] = useState();
     const [emailVeterinary, setEmailVeterinary] = useState("");
     const [clientId, setClientId] = useState("");
+    const [veterinaryId, setVeterinaryId] = useState("");
 
     const GET_ANIMALS = "/user/veterinary/";
 
@@ -56,7 +57,9 @@ const Animals = () => {
             axios.get("/user/client/" + id)
                 .then(function (response) {
                     const infos = response.data;
+                    console.log(response.data.veterinary_id);
                     setData(infos);
+                    setVeterinaryId(infos.veterinary_id);
                 })
                 .catch(err => console.log(err))
         }
@@ -80,7 +83,8 @@ const Animals = () => {
 
     const getVeterinaryInfo = () => {
         if (type === "client") {
-            axios.get("/user/veterinary/" + data.veterinary_id)
+            console.log(data)
+            axios.get("/user/veterinary/" + veterinaryId)
                 .then(function (response) {
                     console.log(response.data);
                     const infos = response.data;
