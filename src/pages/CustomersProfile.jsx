@@ -10,6 +10,10 @@ const CustomersProfile = () => {
     const { id } = useParams();
     const veterinary_id = localStorage.getItem('userId');
     const navigate = useNavigate();
+    const [edit, setEdit] = useState(false);
+    const [editAddress, setEditAddress] = useState(false);
+    const [editPhone, setEditPhone] = useState(false);
+    const [editEmail, setEditEmail] = useState(false);
 
     const GET_CLIENT = '/user/client/';
     const GET_ANIMALS = 'user/client/';
@@ -102,6 +106,27 @@ const CustomersProfile = () => {
         }
     }
 
+    const updateInfosProfil = async () => {
+
+        try {
+            console.log(editAddress, editPhone, editEmail);
+            console.log(userInfos?.address, userInfos?.phone, userInfos?.email);
+            const response = await axios.put(
+                "/client/" + userInfos?.id,
+                JSON.stringify({ address: (editAddress ? editAddress : userInfos?.address), phone: (editPhone ? editPhone : userInfos?.phone), email: (editEmail ? editEmail : userInfos?.email), veterinary_id }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    // withCredentials: true
+                }
+            );
+            console.log(response.data);
+            setUserInfos(response.data);
+            setEdit(false);
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     const getAnimalProfil = (id) => {
         navigate(`/profil_animal/id=${id}`);
     }
@@ -115,12 +140,43 @@ const CustomersProfile = () => {
                     Profil du client : {userInfos?.firstname} {userInfos?.lastname}
                 </h1>
                 <div className='infos_container'>
-                    <div><span>Date de création de la fiche : </span>{userInfos?.created_at?.slice(0, 10).split('-').reverse().join('/')}</div>
-                    <div><span>Adresse : </span>{userInfos?.address}</div>
-                    <div><span>Numéro de téléphone : </span>{userInfos?.phone}</div>
-                    <div><span>Adresse email : </span>{userInfos?.email}</div>
+                    <div><span>Date de création de la fiche : </span>{userInfos?.created_at?.slice(0, 10).split('-').reverse().join('/')}
+                    </div>
+
+                    <div><span>Adresse : </span>{edit ? (
+                        <input
+                            type="text"
+                            defaultValue={editAddress ? editAddress : userInfos?.address}
+                            onChange={(e) => setEditAddress(e.target.value)}
+                        />
+                    ) : (userInfos?.address)}
+                    </div>
+
+                    <div><span>Numéro de téléphone : </span>{edit ? (
+                        <input
+                            type="text"
+                            defaultValue={editPhone ? editPhone : userInfos?.phone}
+                            onChange={(e) => setEditPhone(e.target.value)}
+                        />
+                    ) : (userInfos?.phone)}
+                    </div>
+
+                    <div><span>Adresse email : </span>{edit ? (
+                        <input
+                            type="text"
+                            defaultValue={editEmail ? editEmail : userInfos?.email}
+                            onChange={(e) => setEditEmail(e.target.value)}
+                        />
+                    ) : (userInfos?.email)}</div>
                     <div className='btn_container'>
-                        <button>Modifier</button>
+                        {edit ? (
+                            <>
+                                <button onClick={() => updateInfosProfil()}>Valider la modification</button>
+                                <button onClick={() => setEdit(false)}>Annuler</button>
+                            </>
+                        ) :
+                            <button onClick={() => setEdit(true)}>Modifier</button>}
+
                     </div>
                 </div>
                 <hr />

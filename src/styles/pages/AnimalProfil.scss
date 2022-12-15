@@ -39,6 +39,16 @@
             margin: 20px auto;
             flex-direction: column;
 
+            .btn_update {
+                display: flex;
+                justify-content: center;
+
+                button {
+                    margin: 10px;
+                    padding: 10px 15px;
+                }
+            }
+
             button {
                 background: $color-1;
                 border: none;

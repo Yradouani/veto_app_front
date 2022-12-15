@@ -12,6 +12,12 @@ const AnimalProfil = () => {
     const GET_ANIMAL = '/animal/';
     const [clientId, setClientId] = useState();
 
+    const [edit, setEdit] = useState();
+    const [editName, setEditName] = useState();
+    const [editSexe, setEditSexe] = useState();
+    const [editWeight, setEditWeight] = useState();
+    const [editSize, setEditSize] = useState();
+
     useEffect(() => {
         getDataAnimal();
     }, []);
@@ -55,6 +61,33 @@ const AnimalProfil = () => {
         // }
     }
 
+    const updateInfosAnimal = async () => {
+        try {
+            console.log(editName, editSexe, editWeight, editSize);
+            console.log(animalInfos?.name, animalInfos?.sexe, animalInfos?.weight, animalInfos?.size, animalInfos?.veterinary_id, animalInfos?.client_id);
+            const response = await axios.put(
+                "/animal/" + animalInfos?.id,
+                JSON.stringify({
+                    name: (editName ? editName : animalInfos?.name),
+                    sexe: (editSexe ? editSexe : animalInfos?.sexe),
+                    weight: (editWeight ? editWeight : animalInfos?.weight),
+                    size: (editSize ? editSize : animalInfos?.size),
+                    veterinary_id: animalInfos?.veterinary_id,
+                    client_id: animalInfos?.client_id
+                }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    // withCredentials: true
+                }
+            );
+            console.log(response.data);
+            setAnimalInfos(response.data);
+            setEdit(false);
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     return (
         <div className='animal_profil'>
             <img src="../../Untitled(1).png" alt="" className='background' />
@@ -64,17 +97,49 @@ const AnimalProfil = () => {
             <div className='profil_content'>
                 <div className='profil_infos'>
                     <div><span>Propriétaire : </span>{proprioInfos.firstname} {proprioInfos.lastname}</div>
-                    <div><span>Nom : </span>{animalInfos.name}</div>
+                    <div><span>Nom : </span>{edit ? (
+                        <input
+                            type="text"
+                            defaultValue={editName ? editName : animalInfos?.name}
+                            onChange={(e) => setEditName(e.target.value)}
+                        />
+                    ) : (animalInfos.name)}</div>
                     <div><span>Type : </span>{animalInfos.type}</div>
                     <div><span>Date de naissance : </span>{animalInfos?.date_of_birth?.split('-').reverse().join('/')}</div>
-                    <div><span>Sexe : </span>{animalInfos.sexe}</div>
-                    <div><span>Poids : </span>{animalInfos.weight} g</div>
-                    <div><span>Taille : </span>{animalInfos.size} cm</div>
+                    <div><span>Sexe : </span>{edit ? (
+                        <input
+                            type="text"
+                            defaultValue={editSexe ? editSexe : animalInfos?.sexe}
+                            onChange={(e) => setEditSexe(e.target.value)}
+                        />
+                    ) : (animalInfos.sexe)}</div>
+
+                    <div><span>Poids : </span>{edit ? (
+                        <input
+                            type="text"
+                            defaultValue={editWeight ? editWeight : animalInfos?.weight}
+                            onChange={(e) => setEditWeight(e.target.value)}
+                        />
+                    ) : (animalInfos.weight)} g</div>
+
+                    <div><span>Taille : </span>{edit ? (
+                        <input
+                            type="text"
+                            defaultValue={editSize ? editSize : animalInfos?.size}
+                            onChange={(e) => setEditSize(e.target.value)}
+                        />
+                    ) : (animalInfos.size)} cm</div>
                     <div><span>Antécédents médicaux : </span></div>
                     <div><span>Dates des vaccinations : </span></div>
                     <div><span>Dates des rendez-vous : </span></div>
                     <div className='btn_container'>
-                        <button>Modifier le carnet</button>
+                        {edit ?
+                            (<div className='btn_update'>
+                                <button onClick={() => updateInfosAnimal()}>Valider</button>
+                                <button onClick={() => setEdit(false)}>Annuler</button>
+                            </div>)
+                            : <button onClick={() => setEdit(true)}>Modifier le carnet</button>
+                        }
                         <button>Envoyer un rappel Vaccinal</button>
                     </div>
                 </div>
