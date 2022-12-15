@@ -74,15 +74,15 @@ const MainPage = () => {
         } else if (type === "veterinary") {
             try {
                 console.log(editSiret, editEmail, editFirstname, editLastname);
-                console.log(data?.siret, data?.email, data?.firstname, data?.lastname);
+                console.log(data[0]?.siret, data[0]?.email, data[0]?.firstname, data[0]?.lastname);
                 const response = await axios.put(
-                    "/veterinary/" + data?.id,
+                    "/veterinary/" + data[0]?.id,
                     JSON.stringify({
-                        siret: (editSiret ? editSiret : data?.siret),
-                        email: (editEmail ? editEmail : data?.email),
-                        veterinary_id: data?.id,
-                        firstname: (editFirstname ? editFirstname : data?.firstname),
-                        lastname: (editLastname ? editLastname : data?.lastname)
+                        siret: (editSiret ? editSiret : data[0]?.siret),
+                        email: (editEmail ? editEmail : data[0]?.email),
+                        veterinary_id: data[0]?.id,
+                        firstname: (editFirstname ? editFirstname : data[0]?.firstname),
+                        lastname: (editLastname ? editLastname : data[0]?.lastname)
                     }),
                     {
                         headers: { 'Content-Type': 'application/json' },
@@ -90,7 +90,7 @@ const MainPage = () => {
                     }
                 );
                 console.log(response.data);
-                setData(response.data);
+                setData([response.data]);
                 setEdit(false);
             } catch (err) {
                 console.log(err)
@@ -104,6 +104,7 @@ const MainPage = () => {
         <div className='main-page'>
             <img src="background.png" alt="" className='background' />
             <Navbar></Navbar>
+
             {data?.firstname ? (
                 <div className='page_content'>
                     <div className='user_infos_container'>
@@ -115,15 +116,6 @@ const MainPage = () => {
                         <h2>Parcourez la première application de rappel vaccinal automatisé</h2>
                         <h3>Vos informations personnelles</h3>
                         <div><span>Date de création de mon compte : </span>{data?.created_at?.slice(0, 10).split('-').reverse().join('/')}</div>
-                        {(type === "veterinary") ? (
-                            <div><span>Siret : </span>{edit ? (
-                                <input
-                                    type="text"
-                                    defaultValue={editSiret ? editSiret : data?.siret}
-                                    onChange={(e) => setEditSiret(e.target.value)}
-                                />
-                            ) : (data?.siret)}</div>
-                        ) : ""}
                         <div>
                             <span>Nom : </span>{edit ? (
                                 <input
@@ -185,13 +177,70 @@ const MainPage = () => {
                 </div>
 
             ) : <div className='page_content'>
-                <h1>
-                    Bienvenue {data[0]?.firstname}
-                    <br />
-                    dans votre espace {type === 'client' ? "client" : "vétérinaire"}
-                </h1>
-                <h2>Parcourez la première application de rappel vaccinal automatisé</h2>
-            </div>}
+                <div className='user_infos_container'>
+                    <h1>
+                        Bienvenue {data[0]?.firstname}
+                        <br />
+                        dans votre espace {type === 'client' ? "client" : "vétérinaire"}
+                    </h1>
+                    <h2>Parcourez la première application de rappel vaccinal automatisé</h2>
+                    <h3>Vos informations personnelles</h3>
+                    <div><span>Date de création de mon compte : </span>{data[0]?.created_at?.slice(0, 10).split('-').reverse().join('/')}</div>
+
+                    {(type === "veterinary") ? (
+                        <div><span>Siret : </span>{edit ? (
+                            <input
+                                type="text"
+                                defaultValue={editSiret ? editSiret : data[0]?.siret}
+                                onChange={(e) => setEditSiret(e.target.value)}
+                            />
+                        ) : (data[0]?.siret)}
+                        </div>
+                    ) : ""}
+
+                    <div>
+                        <span>Nom : </span>{edit ? (
+                            <input
+                                type="text"
+                                defaultValue={editLastname ? editLastname : data[0]?.lastname}
+                                onChange={(e) => setEditLastname(e.target.value)}
+                            />
+                        ) : (data[0]?.lastname)}
+                    </div>
+                    <div><span>Prénom : </span>{edit ? (
+                        <input
+                            type="text"
+                            defaultValue={editFirstname ? editFirstname : data[0]?.firstname}
+                            onChange={(e) => setEditFirstname(e.target.value)}
+                        />
+                    ) : (data[0]?.firstname)}
+                    </div>
+
+                    <div><span>Adresse email : </span>{edit ? (
+                        <input
+                            type="text"
+                            defaultValue={editEmail ? editEmail : data[0]?.email}
+                            onChange={(e) => setEditEmail(e.target.value)}
+                        />
+                    ) : (data[0]?.email)}
+                    </div>
+
+                    <div className='btn_container'>
+                        {edit ?
+                            (<>
+                                <button className='update_btn' onClick={() => setEdit(false)}>Annuler</button>
+                                <button className='pwd_btn' onClick={() => updateUser()}>Confirmer</button>
+                            </>) : (
+                                <>
+                                    <button className='update_btn' onClick={() => setEdit(true)}>Modifier mes informations personnelles</button>
+                                    <button className='pwd_btn'>Modifier mon mot de passe</button>
+                                </>)
+                        }
+                    </div>
+
+                </div>
+            </div>
+            }
         </div>
     );
 };

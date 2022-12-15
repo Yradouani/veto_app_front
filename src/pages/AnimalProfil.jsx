@@ -8,10 +8,14 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 const AnimalProfil = () => {
     const { id } = useParams();
     const type = localStorage.getItem('type');
+    const veterinary_id = localStorage.getItem('userId');
     const [animalInfos, setAnimalInfos] = useState([]);
     const [proprioInfos, setProprioInfos] = useState([]);
     const GET_ANIMAL = '/animal/';
     const [clientId, setClientId] = useState();
+    const [veterinaryData, setVeterinaryData] = useState();
+    const [modal, setModal] = useState(false);
+    const [vaccineDate, setVaccineDate] = useState();
 
     const [edit, setEdit] = useState();
     const [editName, setEditName] = useState();
@@ -21,6 +25,7 @@ const AnimalProfil = () => {
 
     useEffect(() => {
         getDataAnimal();
+        veterinaryInfo();
     }, []);
 
     useEffect(() => {
@@ -88,6 +93,47 @@ const AnimalProfil = () => {
             console.log(err)
         }
     }
+    const veterinaryInfo = () => {
+        axios.get('/user/veterinary/' + veterinary_id)
+            .then(function (response) {
+                setVeterinaryData(response.data);
+                console.log(response.data);
+            })
+            .catch(err => console.log(err))
+    }
+    const sendEmail = async () => {
+        console.log(veterinaryData[0]?.email,
+            proprioInfos?.firstname,
+            proprioInfos?.lastname,
+            veterinaryData[0]?.firstname,
+            veterinaryData[0]?.lastname,
+            animalInfos?.name,
+            vaccineDate.split('-').reverse().join('/'),
+            proprioInfos?.email)
+        try {
+            const response = await axios.post(
+                "/send",
+                JSON.stringify({
+                    author: veterinaryData[0]?.email,
+                    firstnameclient: proprioInfos?.firstname,
+                    lastnameclient: proprioInfos?.lastname,
+                    firstnameveterinary: veterinaryData[0]?.firstname,
+                    lastnameveterinary: veterinaryData[0]?.lastname,
+                    nameAnimal: animalInfos?.name,
+                    date: vaccineDate.split('-').reverse().join('/'),
+                    emailClient: proprioInfos?.email
+                }),
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    // withCredentials: true
+                }
+            );
+            console.log(response.data);
+            setModal(false);
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     return (
         <div className='animal_profil'>
@@ -133,18 +179,18 @@ const AnimalProfil = () => {
                     <div><span>Antécédents médicaux : </span></div>
                     <div><span>Dates des vaccinations : </span></div>
                     <div><span>Dates des rendez-vous : </span></div>
-                    {(type === "veterinary") ? 
-                    (<div className='btn_container'>
-                        {edit ?
-                            (<div className='btn_update'>
-                                <button onClick={() => updateInfosAnimal()}>Valider</button>
-                                <button onClick={() => setEdit(false)}>Annuler</button>
-                            </div>)
-                            : <button onClick={() => setEdit(true)}>Modifier le carnet</button>
-                        }
-                        <button>Envoyer un rappel Vaccinal</button>
-                    </div>
-                    ) : ""}
+                    {(type === "veterinary") ?
+                        (<div className='btn_container'>
+                            {edit ?
+                                (<div className='btn_update'>
+                                    <button onClick={() => updateInfosAnimal()}>Valider</button>
+                                    <button onClick={() => setEdit(false)}>Annuler</button>
+                                </div>)
+                                : <button onClick={() => setEdit(true)}>Modifier le carnet</button>
+                            }
+                            <button onClick={() => setModal(true)}>Envoyer un rappel Vaccinal</button>
+                        </div>
+                        ) : ""}
                 </div>
             </div>
 
@@ -152,6 +198,21 @@ const AnimalProfil = () => {
                 <AiOutlineArrowLeft />
                 <span>Retourner à la fiche client</span>
             </div>
+            {modal ? (
+                <div className='modal'>
+                    <h3>Choissisez la date du rappel vaccinal</h3>
+                    <input
+                        type="date"
+                        name=""
+                        id=""
+                        onChange={(e) => setVaccineDate(e.target.value)}
+                    />
+                    <div className='btn-container'>
+                        <button onClick={() => sendEmail()}>Valider</button>
+                        <button onClick={() => setModal(false)}>Annuler</button>
+                    </div>
+                </div>
+            ) : ""}
         </div>
     );
 };
