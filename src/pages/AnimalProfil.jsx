@@ -16,6 +16,7 @@ const AnimalProfil = () => {
     const [veterinaryData, setVeterinaryData] = useState();
     const [modal, setModal] = useState(false);
     const [vaccineDate, setVaccineDate] = useState();
+    const [vaccineAppointment, setVaccineAppointment] = useState([]);
 
     const [edit, setEdit] = useState();
     const [editName, setEditName] = useState();
@@ -26,7 +27,12 @@ const AnimalProfil = () => {
     useEffect(() => {
         getDataAnimal();
         veterinaryInfo();
+        getLastDateOfVaccine();
     }, []);
+
+    useEffect(() => {
+        getLastDateOfVaccine();
+    }, [vaccineDate])
 
     useEffect(() => {
         if (clientId) {
@@ -130,9 +136,47 @@ const AnimalProfil = () => {
             );
             console.log(response.data);
             setModal(false);
+            console.log(vaccineDate)
+            createNewAppointment();
         } catch (err) {
             console.log(err)
         }
+    }
+
+    const createNewAppointment = async () => {
+        try {
+            console.log(vaccineDate, veterinary_id, id)
+            if (vaccineDate) {
+                const response = await axios.post(
+                    "/appointments",
+                    JSON.stringify({
+                        appointment_object: (vaccineDate ? "Vaccination" : ""),
+                        isVaccin: (vaccineDate ? true : false),
+                        date_of_appointment: vaccineDate,
+                        veterinary_id: veterinary_id,
+                        animal_id: id
+                    }),
+                    {
+                        headers: { 'Content-Type': 'application/json' },
+                        // withCredentials: true
+                    }
+                );
+                console.log(response.data);
+                getLastDateOfVaccine();
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    const getLastDateOfVaccine = () => {
+        axios.get("/animal/" + id + "/appointment/vaccine")
+            .then(function (response) {
+                console.log(response.data);
+                setVaccineAppointment(response.data);
+                console.log(vaccineAppointment);
+            }
+            )
+            .catch(err => console.log(err))
     }
 
     return (
@@ -177,7 +221,13 @@ const AnimalProfil = () => {
                         />
                     ) : (animalInfos.size)} cm</div>
                     <div><span>Antécédents médicaux : </span></div>
-                    <div><span>Dates des vaccinations : </span></div>
+                    <div><span>Date du prochain vaccin : </span>
+                        <span className={vaccineAppointment.length > 0 ? 'vaccine_date' : 'no_vaccine_date'}>
+                            {vaccineAppointment.length > 0 ?
+                                vaccineAppointment[0].date_of_appointment.split('-').reverse().join('/')
+                                : "Pas de date prévue"}
+                        </span>
+                    </div>
                     <div><span>Dates des rendez-vous : </span></div>
                     {(type === "veterinary") ?
                         (<div className='btn_container'>

@@ -429,7 +429,7 @@ const Customers = () => {
                                             <td>{client.lastname}</td>
                                             <td>{client.email}</td>
                                             <td>{client.created_at}</td>
-                                            <td className='update_btn'><BsPencilSquare /></td>
+                                            {/* <td className='update_btn'><BsPencilSquare /></td> */}
                                             <td onClick={() => deleteClient(client.id)} className='delete_btn'><FaTrashAlt /></td>
                                         </tr>
                                     )
