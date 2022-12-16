@@ -14,6 +14,7 @@ const Animals = () => {
     const [emailVeterinary, setEmailVeterinary] = useState("");
     const [clientId, setClientId] = useState("");
     const [veterinaryId, setVeterinaryId] = useState("");
+    const [search, setSearch] = useState("");
 
     const GET_ANIMALS = "/user/veterinary/";
 
@@ -119,12 +120,22 @@ const Animals = () => {
             <h1>Mes animaux</h1>
             <div id="search_field">
                 <AiOutlineSearch />
-                <input type="text" name="search" id="search_field_input" placeholder="Rechercher" maxlength="20" />
+                <input
+                    type="text"
+                    name="search"
+                    id="search_field_input"
+                    placeholder="Rechercher"
+                    maxlength="20"
+                    onChange={(e) => setSearch(e.target.value)}
+                />
             </div>
             {(animals.length !== 0) ? (
                 <div className='global_cards_container'>
                     {
-                        animals?.map(animal => {
+                        animals?.filter((item) => {
+                            return search.toLocaleLowerCase() === '' ?
+                                item : item.name.toLocaleLowerCase().includes(search);
+                        }).map(animal => {
                             return (
                                 <div className='card_content' key={animal.id}>
                                     <div className='card_content_container'>
