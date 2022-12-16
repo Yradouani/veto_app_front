@@ -1,4 +1,62 @@
 .main-page {
+    .modal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 40px;
+        background: white;
+        border: 1px solid black;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 50%;
+
+        .input_modal {
+            display: flex;
+            flex-direction: column;
+            margin: 10px auto;
+            width: 50%;
+
+            input {
+                margin-top: 15px;
+            }
+
+        }
+
+        .btn_container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+
+            button {
+                padding: 10px 15px;
+                cursor: pointer;
+                margin: 15px;
+                border-radius: 10px;
+                transition: all 0.2s ease-in-out;
+            }
+
+            .confirm {
+                border: 2px solid orange;
+                background: orange;
+
+                &:hover {
+                    background: white;
+                }
+            }
+
+            .cancel {
+                border: 2px solid orange;
+                background: white;
+
+                &:hover {
+                    background: orange;
+                }
+            }
+        }
+    }
+
     .background {
         width: 100%;
         position: absolute;
@@ -25,7 +83,8 @@
         }
 
         .user_infos_container {
-margin-right: 90px;
+            margin-right: 90px;
+
             div {
                 margin: 7px 0;
 
@@ -33,6 +92,7 @@ margin-right: 90px;
                     font-weight: bold;
                 }
             }
+
             .btn_container {
                 margin-top: 30px;
 

@@ -1,4 +1,16 @@
 .animal_profil {
+    .return {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        font-size: 17px;
+        font-weight: bold;
+
+        svg {
+            margin-right: 5px;
+        }
+    }
 
     .modal {
         position: absolute;

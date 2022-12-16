@@ -8,6 +8,12 @@ import { useState } from 'react';
 const MainPage = () => {
     // const { auth } = useContext(AuthContext);
     const [data, setData] = useState({});
+    const [modal, setModal] = useState(false);
+
+
+    const [oldPassword, setOldPassword] = useState();
+    const [newPassword, setNewPassword] = useState();
+    const [confirmPassword, setConfirmPassword] = useState();
 
     const USER_URL = '/user/veterinary/';
     const id = localStorage.getItem('userId');
@@ -36,6 +42,7 @@ const MainPage = () => {
                 .then(function (response) {
                     const infos = response.data;
                     setData(infos);
+                    localStorage.setItem('veterinary_id', response.data.veterinary_id);
                 })
                 .catch(err => console.log(err))
         }
@@ -97,7 +104,30 @@ const MainPage = () => {
             }
         }
     }
+    const updatePassword = async () => {
+        if (type === "client") {
+            try {
+                console.log(oldPassword, newPassword, confirmPassword);
+                const response = await axios.put(
+                    "/user/client/" + id,
+                    JSON.stringify({
+                        old_pwd: oldPassword,
+                        pwd: newPassword,
+                        confirm_pwd: confirmPassword
+                    }),
+                    {
+                        headers: { 'Content-Type': 'application/json' },
+                        // withCredentials: true
+                    }
+                );
+                console.log(response.data);
+                setModal(false);
+            } catch (err) {
+                console.log(err)
+            }
+        }
 
+    }
     console.log(data);
 
     return (
@@ -169,7 +199,7 @@ const MainPage = () => {
                                 </>) : (
                                     <>
                                         <button className='update_btn' onClick={() => setEdit(true)}>Modifier mes informations personnelles</button>
-                                        <button className='pwd_btn'>Modifier mon mot de passe</button>
+                                        <button className='pwd_btn' onClick={() => setModal(true)}>Modifier mon mot de passe</button>
                                     </>)
                             }
                         </div>
@@ -241,6 +271,40 @@ const MainPage = () => {
                 </div>
             </div>
             }
+            {modal ? (
+                <div className='modal'>
+                    <div className='input_modal'>
+                        <label htmlFor="old_password">Ancien mot de passe * :</label>
+                        <input
+                            type="password"
+                            id="old_password"
+                            onChange={(e) => setOldPassword(e.target.value)} />
+                    </div>
+
+                    <div className='input_modal'>
+                        <label htmlFor="new_password">Nouveau mot de passe * :</label>
+                        <input
+                            type="password"
+                            id="new_password"
+                            onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                    </div>
+
+                    <div className='input_modal'>
+                        <label htmlFor="confirm_new_password">Confirmer mot de passe * :</label>
+                        <input
+                            type="password"
+                            id="confirm_new_password"
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                        />
+                    </div>
+
+                    <div className='btn_container'>
+                        <button className='confirm' onClick={() => updatePassword()}>Confirmer</button>
+                        <button className='cancel' onClick={() => setModal(false)}>Annuler</button>
+                    </div>
+                </div>
+            ) : ("")}
         </div>
     );
 };

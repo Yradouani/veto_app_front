@@ -7,6 +7,7 @@ import { AiOutlineArrowLeft } from "react-icons/ai";
 
 const AnimalProfil = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const type = localStorage.getItem('type');
     const veterinary_id = localStorage.getItem('userId');
     const [animalInfos, setAnimalInfos] = useState([]);
@@ -154,7 +155,8 @@ const AnimalProfil = () => {
                         isVaccin: (vaccineDate ? true : false),
                         date_of_appointment: vaccineDate,
                         veterinary_id: veterinary_id,
-                        animal_id: id
+                        animal_id: id,
+                        client_id: clientId
                     }),
                     {
                         headers: { 'Content-Type': 'application/json' },
@@ -177,6 +179,10 @@ const AnimalProfil = () => {
             }
             )
             .catch(err => console.log(err))
+    }
+
+    const returnToClientProfil = () => {
+        navigate(`/page_accueil`);
     }
 
     return (
@@ -220,7 +226,7 @@ const AnimalProfil = () => {
                             onChange={(e) => setEditSize(e.target.value)}
                         />
                     ) : (animalInfos.size)} cm</div>
-                    <div><span>Antécédents médicaux : </span></div>
+                    <div><span>Antécédents médicaux : </span>RAS</div>
                     <div><span>Date du prochain vaccin : </span>
                         <span className={vaccineAppointment.length > 0 ? 'vaccine_date' : 'no_vaccine_date'}>
                             {vaccineAppointment.length > 0 ?
@@ -228,7 +234,6 @@ const AnimalProfil = () => {
                                 : "Pas de date prévue"}
                         </span>
                     </div>
-                    <div><span>Dates des rendez-vous : </span></div>
                     {(type === "veterinary") ?
                         (<div className='btn_container'>
                             {edit ?
@@ -244,7 +249,7 @@ const AnimalProfil = () => {
                 </div>
             </div>
 
-            <div>
+            <div className='return' onClick={() => returnToClientProfil()}>
                 <AiOutlineArrowLeft />
                 <span>Retourner à la fiche client</span>
             </div>
